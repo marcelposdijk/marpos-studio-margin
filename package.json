@@ -10,11 +10,15 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.0.0",
+    "@astrojs/cloudflare": "^14.2.0",
+    "@astrojs/mdx": "^7.0.5",
     "@astrojs/rss": "^4.0.19",
-    "@astrojs/sitemap": "^3.0.0",
-    "@astrojs/tailwind": "^6.0.0",
-    "astro": "^5.0.0",
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.2.0",
+    "autoprefixer": "^10.5.4",
+    "highlight.js": "^11.11.1",
+    "marked": "^18.0.7",
+    "postcss": "^8.5.26",
     "tailwindcss": "^3.4.0"
   },
   "devDependencies": {
@@ -34,7 +38,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/respectevery01/astro-uzen-theme.git"
+    "url": "https://github.com/Liteink/margin.git"
   },
-  "homepage": "https://astro-uzen-theme.pages.dev"
+  "homepage": "https://margin.pages.dev"
 }

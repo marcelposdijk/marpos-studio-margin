@@ -1,43 +1,40 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import config from '../config.json';
+import { getPageBySlug, renderMarkdown } from '../lib/content';
 import SocialShare from '../components/SocialShare.astro';
 
-export async function getStaticPaths() {
-    const pages = await getCollection('pages');
-    return pages.map(page => ({
-        params: { slug: page.slug },
-        props: { page },
-    }));
+const slug = Astro.params.slug as string;
+const page = await getPageBySlug(slug);
+
+if (!page) {
+	return Astro.redirect('/404');
 }
 
-const { page } = Astro.props;
-const { Content } = await page.render();
+const html = renderMarkdown(page.body);
 ---
 
-<Layout title={`${page.data.title} - ${config.siteTitle}`}>
-    <div class="max-w-[1280px] mx-auto px-5 md:px-8 py-10 md:py-14" style="max-width:1024px">
-        <header class="mb-10 md:mb-12 pb-8 border-b border-[var(--c-border)]">
-            <h1 class="font-serif text-[28px] sm:text-[36px] md:text-[48px] font-bold leading-[1.1] tracking-tight text-ink mb-4">
-                {page.data.title}
-            </h1>
-            {page.data.description && (
-                <p class="text-[17px] text-body max-w-[500px]">
-                    {page.data.description}
-                </p>
-            )}
-        </header>
+<Layout title={`${page.title} - ${config.siteTitle}`} description={page.description}>
+	<div class="max-w-[1280px] mx-auto px-5 md:px-8 py-10 md:py-14" style="max-width:1024px">
+		<header class="mb-10 md:mb-12 pb-8 border-b border-[var(--c-border)]">
+			<h1 class="font-serif text-[28px] sm:text-[36px] md:text-[48px] font-bold leading-[1.1] tracking-tight text-ink mb-4">
+				{page.title}
+			</h1>
+			{page.description && (
+				<p class="text-[17px] text-body max-w-[500px]">
+					{page.description}
+				</p>
+			)}
+		</header>
 
-        <div class="prose max-w-none">
-            <Content />
-        </div>
+		<div class="prose max-w-none" set:html={html}>
+		</div>
 
-        {page.data.showSocial && (
-            <div class="mt-12 pt-8 border-t border-[var(--c-border)]">
-                <h3 class="font-serif text-[20px] font-bold text-ink mb-4">Follow Us</h3>
-                <SocialShare links={config.socialLinks} />
-            </div>
-        )}
-    </div>
+		{config.socialLinks && config.socialLinks.length > 0 && (
+			<div class="mt-12 pt-8 border-t border-[var(--c-border)]">
+				<h3 class="font-serif text-[20px] font-bold text-ink mb-4">Follow</h3>
+				<SocialShare links={config.socialLinks} />
+			</div>
+		)}
+	</div>
 </Layout>

@@ -1,4 +1,9 @@
 {
+  "contentMode": "local",
+  "cms": {
+    "url": "https://your-cms-url.example.com",
+    "token": "your_api_token_here"
+  },
   "siteTitle": "Margin",
   "siteDescription": "A dark editorial blog theme. Built with Astro, Tailwind CSS, and TypeScript.",
   "introSection": {
@@ -8,38 +13,91 @@
     "linkUrl": "/about"
   },
   "navigation": [
-    { "label": "Home", "href": "/" },
-    { "label": "Technology", "href": "/category/technology" },
-    { "label": "Design", "href": "/category/design" },
-    { "label": "Culture", "href": "/category/culture" },
-    { "label": "Series", "href": "/series" },
-    { "label": "About", "href": "/about" }
+    {
+      "label": "Home",
+      "href": "/"
+    },
+    {
+      "label": "Technology",
+      "href": "/category/technology"
+    },
+    {
+      "label": "Design",
+      "href": "/category/design"
+    },
+    {
+      "label": "Culture",
+      "href": "/category/culture"
+    },
+    {
+      "label": "Series",
+      "href": "/series"
+    },
+    {
+      "label": "About",
+      "href": "/about"
+    }
   ],
   "socialLinks": [
-    { "label": "Twitter", "href": "#", "icon": "twitter" },
-    { "label": "Facebook", "href": "#", "icon": "facebook" },
-    { "label": "Instagram", "href": "#", "icon": "instagram" }
+    {
+      "label": "Twitter",
+      "href": "#",
+      "icon": "twitter"
+    },
+    {
+      "label": "Facebook",
+      "href": "#",
+      "icon": "facebook"
+    },
+    {
+      "label": "Instagram",
+      "href": "#",
+      "icon": "instagram"
+    }
   ],
   "shareLinks": [
-    { "label": "Twitter", "href": "#", "icon": "twitter" },
-    { "label": "Facebook", "href": "#", "icon": "facebook" }
+    {
+      "label": "Twitter",
+      "href": "#",
+      "icon": "twitter"
+    },
+    {
+      "label": "Facebook",
+      "href": "#",
+      "icon": "facebook"
+    }
   ],
   "marquee": [
-    "MARGIN — A DARK EDITORIAL ASTRO THEME",
+    "MARGIN \u2014 A DARK EDITORIAL ASTRO THEME",
     "BUILT FOR SPEED, READABILITY, AND BOLD TYPOGRAPHY",
     "CONTENT COLLECTIONS, DARK MODE, SOCIAL SHARING",
-    "MIT LICENSED — FREE FOR ANY USE"
+    "MIT LICENSED \u2014 FREE FOR ANY USE"
   ],
   "enableAuthor": true,
   "footer": {
     "sections": [
-      { "label": "Technology", "href": "/category/technology" },
-      { "label": "Design", "href": "/category/design" },
-      { "label": "Culture", "href": "/category/culture" }
+      {
+        "label": "Technology",
+        "href": "/category/technology"
+      },
+      {
+        "label": "Design",
+        "href": "/category/design"
+      },
+      {
+        "label": "Culture",
+        "href": "/category/culture"
+      }
     ],
     "legal": [
-      { "label": "Privacy Policy", "href": "/privacy" },
-      { "label": "Terms of Service", "href": "/terms" }
+      {
+        "label": "Privacy Policy",
+        "href": "/privacy"
+      },
+      {
+        "label": "Terms of Service",
+        "href": "/terms"
+      }
     ]
   }
 }

@@ -54,6 +54,5 @@ import Button from './Button.astro';
 		btn?.addEventListener('click', () => menu?.classList.toggle('hidden'));
 	}
 
-	initMobileMenu();
 	document.addEventListener('astro:page-load', initMobileMenu);
 </script>

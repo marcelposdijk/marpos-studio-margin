@@ -1,4 +1,4 @@
----
+ ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import ReadingProgress from '../components/ReadingProgress.astro';
@@ -6,6 +6,7 @@ import BackToTop from '../components/BackToTop.astro';
 import Lightbox from '../components/Lightbox.astro';
 import config from '../config.json';
 import { ClientRouter } from 'astro:transitions';
+import '../styles/tailwind.css';
 
 interface Props {
 	title: string;
@@ -105,6 +106,10 @@ const ogImage = image || '/og.png';
 		--c-accent: #d4324a;
 		--c-accent-deep: #a52136;
 		--c-accent-soft: #f2a8b3;
+		/* Code block */
+		--c-code-bg: #161214;
+		--c-code-border: rgba(245,240,234,0.06);
+		--c-code-header: rgba(245,240,234,0.04);
 		/* Inverted section (light block in dark theme) */
 		--c-inv-bg: #f5f0ea;
 		--c-inv-ink: #1a1115;
@@ -125,6 +130,10 @@ const ogImage = image || '/og.png';
 		--c-accent: #d4324a;
 		--c-accent-deep: #a52136;
 		--c-accent-soft: #c25668;
+		/* Code block */
+		--c-code-bg: #1e1b1e;
+		--c-code-border: rgba(0,0,0,0.3);
+		--c-code-header: rgba(255,255,255,0.06);
 		/* Inverted section (dark block in light theme) */
 		--c-inv-bg: #1a1115;
 		--c-inv-ink: #f5f0ea;
@@ -163,73 +172,289 @@ const ogImage = image || '/og.png';
 		font-family: 'Inter', sans-serif;
 		max-width: 680px;
 	}
-	.prose h1, .prose h2, .prose h3, .prose h4 {
+
+	/* Headings */
+	.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
 		font-family: 'Fraunces', serif;
 		color: var(--c-ink);
 		font-weight: 700;
 		letter-spacing: -0.02em;
+		line-height: 1.25;
 	}
-	.prose h2 { font-size: 1.75rem; margin-top: 2.5rem; margin-bottom: 1rem; }
+	.prose h2 {
+		font-size: 1.75rem;
+		margin-top: 2.75rem;
+		margin-bottom: 1rem;
+		padding-bottom: 0.5rem;
+		border-bottom: 1px solid var(--c-border);
+	}
 	.prose h3 { font-size: 1.35rem; margin-top: 2rem; margin-bottom: 0.75rem; }
+	.prose h4 { font-size: 1.1rem; margin-top: 1.75rem; margin-bottom: 0.5rem; font-family: 'Inter', sans-serif; font-weight: 600; }
+	.prose h5 { font-size: 0.95rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-family: 'Inter', sans-serif; font-weight: 600; color: var(--c-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+	.prose h6 { font-size: 0.85rem; margin-top: 1.5rem; margin-bottom: 0.5rem; font-family: 'Inter', sans-serif; font-weight: 500; color: var(--c-faint); text-transform: uppercase; letter-spacing: 0.08em; }
+
+	/* Paragraphs */
 	.prose p {
 		color: var(--c-body);
 		line-height: 1.85;
 		font-size: 1.05rem;
 		margin-bottom: 1.25rem;
 	}
+	.prose p + p { margin-top: 0; }
+
+	/* Links */
 	.prose a {
 		color: var(--c-accent-soft);
 		border-bottom: 1px solid color-mix(in srgb, var(--c-accent-soft) 30%, transparent);
-		transition: border-color 0.2s;
+		transition: border-color 0.2s, color 0.2s;
 	}
 	.prose a:hover { border-bottom-color: var(--c-accent-soft); }
-	.prose strong { color: var(--c-ink); font-weight: 600; }
-	.prose blockquote {
-		border-left: 2px solid var(--c-accent);
-		padding-left: 1.5rem;
-		margin: 1.5rem 0;
-		font-style: italic;
-		color: var(--c-body);
+
+	/* Inline emphasis */
+	.prose strong, .prose b { color: var(--c-ink); font-weight: 600; }
+	.prose em, .prose i { font-style: italic; }
+	.prose del, .prose s { color: var(--c-faint); }
+
+	/* Inline code */
+	.prose code {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.85rem;
+		background: color-mix(in srgb, var(--c-ink) 7%, transparent);
+		padding: 0.12rem 0.4rem;
+		border-radius: 3px;
+		color: var(--c-accent-soft);
+		font-weight: 500;
+		border: 1px solid color-mix(in srgb, var(--c-ink) 5%, transparent);
 	}
+
+	/* Keyboard */
+	.prose kbd {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.8rem;
+		background: var(--c-surface);
+		border: 1px solid var(--c-border-strong);
+		border-bottom-width: 2px;
+		border-radius: 4px;
+		padding: 0.15rem 0.45rem;
+		color: var(--c-ink);
+		line-height: 1;
+		display: inline-block;
+	}
+
+	/* Code blocks — always dark for consistency (like VS Code) */
+	.prose pre {
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.82rem;
+		line-height: 1.7;
+		background: var(--c-code-bg);
+		border: 1px solid var(--c-code-border);
+		border-radius: 8px;
+		padding: 1.5rem 1.5rem 1.25rem;
+		overflow-x: auto;
+		margin: 1.75rem 0;
+		position: relative;
+	}
+	.prose pre code {
+		background: transparent;
+		padding: 0;
+		border: none;
+		color: #d4d4d4;
+		font-size: inherit;
+		font-weight: 400;
+	}
+	/* Language label */
+	.prose pre[data-language]::before {
+		content: attr(data-language);
+		position: absolute;
+		top: 0;
+		right: 0;
+		font-family: 'JetBrains Mono', monospace;
+		font-size: 0.62rem;
+		font-weight: 500;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: rgba(255,255,255,0.3);
+		background: var(--c-code-header);
+		padding: 0.35rem 0.75rem;
+		border-radius: 0 8px 0 6px;
+		user-select: none;
+		pointer-events: none;
+	}
+
+	/* ── highlight.js token colors (works on dark bg in both themes) ─── */
+	.prose .hljs { color: #d4d4d4; background: transparent; }
+	.prose .hljs-comment, .prose .hljs-quote { color: #6a737d; font-style: italic; }
+	.prose .hljs-keyword, .prose .hljs-selector-tag, .prose .hljs-built_in, .prose .hljs-meta { color: #f2a8b3; }
+	.prose .hljs-string, .prose .hljs-attr, .prose .hljs-template-tag, .prose .hljs-addition { color: #7ec699; }
+	.prose .hljs-number, .prose .hljs-literal, .prose .hljs-type, .prose .hljs-link { color: #e5c07b; }
+	.prose .hljs-title, .prose .hljs-name, .prose .hljs-section, .prose .hljs-selector-id { color: #61afef; }
+	.prose .hljs-function .hljs-title { color: #61afef; }
+	.prose .hljs-tag { color: #6a737d; }
+	.prose .hljs-attribute, .prose .hljs-variable, .prose .hljs-symbol, .prose .hljs-bullet { color: #d19a66; }
+	.prose .hljs-deletion { color: #e06c75; }
+	.prose .hljs-emphasis { font-style: italic; }
+	.prose .hljs-strong { font-weight: 700; }
+	.prose .hljs-params { color: #d4d4d4; }
+	.prose .hljs-regexp { color: #56b6c2; }
+
+	/* Blockquotes */
+	.prose blockquote {
+		border-left: 3px solid var(--c-accent);
+		padding: 0.25rem 0 0.25rem 1.5rem;
+		margin: 1.75rem 0;
+		color: var(--c-body);
+		font-style: italic;
+	}
+	.prose blockquote p { margin-bottom: 0.5rem; }
+	.prose blockquote p:last-child { margin-bottom: 0; }
+	.prose blockquote blockquote { margin-top: 1rem; margin-bottom: 0; }
+
+	/* Lists */
 	.prose ul, .prose ol {
 		color: var(--c-body);
 		padding-left: 1.5rem;
 		margin-bottom: 1.25rem;
 	}
-	.prose li { margin-bottom: 0.5rem; line-height: 1.75; }
-	.prose code {
-		font-family: 'JetBrains Mono', monospace;
-		font-size: 0.875rem;
-		background: color-mix(in srgb, var(--c-ink) 6%, transparent);
-		padding: 0.15rem 0.4rem;
-		border-radius: 3px;
-		color: var(--c-accent-soft);
+	.prose ul { list-style: none; }
+	.prose ul > li {
+		position: relative;
+		padding-left: 1.25rem;
+		margin-bottom: 0.5rem;
+		line-height: 1.75;
 	}
-	.prose pre {
+	.prose ul > li::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0.7rem;
+		width: 5px;
+		height: 5px;
+		border-radius: 50%;
+		background: var(--c-accent);
+		opacity: 0.7;
+	}
+	.prose ol { list-style: none; counter-reset: ol-counter; }
+	.prose ol > li {
+		counter-increment: ol-counter;
+		position: relative;
+		padding-left: 2rem;
+		margin-bottom: 0.5rem;
+		line-height: 1.75;
+	}
+	.prose ol > li::before {
+		content: counter(ol-counter);
+		position: absolute;
+		left: 0;
+		top: 0.05rem;
 		font-family: 'JetBrains Mono', monospace;
-		font-size: 0.875rem;
-		line-height: 1.6;
-		background: var(--c-surface);
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: var(--c-accent);
+		background: color-mix(in srgb, var(--c-accent) 10%, transparent);
+		border-radius: 3px;
+		width: 1.4rem;
+		height: 1.4rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	/* Task list checkboxes */
+	.prose ul li input[type="checkbox"] {
+		margin-right: 0.5rem;
+		accent-color: var(--c-accent);
+		transform: translateY(1px);
+	}
+	.prose ul li:has(input[type="checkbox"]) { padding-left: 0; list-style: none; }
+	.prose ul li:has(input[type="checkbox"])::before { display: none; }
+
+	/* Nested lists */
+	.prose li ul, .prose li ol { margin-top: 0.5rem; margin-bottom: 0; }
+
+	/* Tables */
+	.prose table {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 1.75rem 0;
+		font-size: 0.92rem;
 		border: 1px solid var(--c-border);
-		border-radius: 3px;
-		padding: 1.25rem;
-		overflow-x: auto;
-		margin: 1.5rem 0;
+		border-radius: 6px;
+		overflow: hidden;
 	}
-	.prose pre code {
-		background: transparent;
-		padding: 0;
+	.prose thead { background: color-mix(in srgb, var(--c-ink) 4%, transparent); }
+	.prose thead th {
+		font-family: 'Inter', sans-serif;
+		font-weight: 600;
 		color: var(--c-ink);
+		text-align: left;
+		padding: 0.75rem 1rem;
+		border-bottom: 1px solid var(--c-border-strong);
 	}
+	.prose tbody td {
+		color: var(--c-body);
+		padding: 0.7rem 1rem;
+		border-bottom: 1px solid var(--c-border);
+		line-height: 1.6;
+	}
+	.prose tbody tr:last-child td { border-bottom: none; }
+	.prose tbody tr:nth-child(even) td {
+		background: color-mix(in srgb, var(--c-ink) 1.5%, transparent);
+	}
+
+	/* Images */
 	.prose img {
-		border-radius: 3px;
-		margin: 1.5rem 0;
+		border-radius: 6px;
+		margin: 1.75rem 0;
+		max-width: 100%;
+		height: auto;
 	}
+	/* Image inside link */
+	.prose a img { border-bottom: none; }
+
+	/* Figure / figcaption */
+	.prose figure { margin: 1.75rem 0; }
+	.prose figure img { margin: 0; border-radius: 6px; }
+	.prose figcaption {
+		font-size: 0.82rem;
+		color: var(--c-muted);
+		text-align: center;
+		margin-top: 0.5rem;
+		font-style: italic;
+		line-height: 1.5;
+	}
+
+	/* Horizontal rule */
 	.prose hr {
 		border: none;
-		border-top: 1px solid var(--c-border);
-		margin: 2.5rem 0;
+		height: 1px;
+		background: linear-gradient(90deg, transparent, var(--c-border-strong), transparent);
+		margin: 3rem 0;
 	}
+
+	/* Definition lists */
+	.prose dl { margin: 1.5rem 0; }
+	.prose dt {
+		font-family: 'Inter', sans-serif;
+		font-weight: 600;
+		color: var(--c-ink);
+		margin-top: 1rem;
+	}
+	.prose dd {
+		color: var(--c-body);
+		padding-left: 1.5rem;
+		margin: 0.25rem 0 0 0;
+		line-height: 1.75;
+	}
+
+	/* Mark / highlight */
+	.prose mark {
+		background: color-mix(in srgb, var(--c-accent) 20%, transparent);
+		color: var(--c-ink);
+		padding: 0.1rem 0.3rem;
+		border-radius: 3px;
+	}
+
+	/* Subscript / Superscript */
+	.prose sub, .prose sup { font-size: 0.75em; }
 
 	/* ── Scrollbar ───────────────────────── */
 	::-webkit-scrollbar { width: 6px; }

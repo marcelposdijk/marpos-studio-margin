@@ -1,0 +1,19 @@
+{
+  "spec": "well-known-mcp/0.1",
+  "name": "Margin",
+  "description": "A dark editorial Astro theme for magazines, journals, and independent publications.",
+  "version": "1.0.0",
+  "site_url": "https://astro-uzen-theme.pages.dev",
+  "capabilities": {
+    "content": true,
+    "search": true,
+    "series": true
+  },
+  "endpoints": {
+    "posts": "/api/posts.json",
+    "series": "/api/series.json",
+    "categories": "/api/categories.json",
+    "search": "/search/"
+  },
+  "license": "MIT"
+}

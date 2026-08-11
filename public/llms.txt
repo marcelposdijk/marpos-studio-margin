@@ -1,17 +1,25 @@
 # Margin
 
-> A dark editorial Astro theme for magazines, journals, and independent publications.
+> A dark editorial Astro theme for magazines, journals, and independent publications. Agent-native: ships with structured content APIs and MCP discovery.
 
-Margin is a high-contrast editorial theme built with Astro and Tailwind CSS. Dark mode by default, content collections, author profiles, social sharing, and syntax-highlighted code blocks. MIT licensed — free for personal and commercial use.
+Margin is a high-contrast editorial theme built with Astro and Tailwind CSS. Dark mode by default, content collections, author profiles, social sharing, syntax-highlighted code blocks, series/columns, tags, full-text search, and View Transitions. MIT licensed — free for personal and commercial use.
+
+## Agent-Native APIs
+
+This site is agent-ready. AI agents can discover and consume structured content via:
+
+- `/.well-known/mcp.json` — MCP auto-discovery endpoint
+- `/api/posts.json` — All posts with metadata + excerpts
+- `/api/series.json` — Multi-part article series
+- `/api/categories.json` — Category index
 
 ## Pages
 
 - [Home](https://astro-uzen-theme.pages.dev/) — Featured story + article grid
+- [Series](https://astro-uzen-theme.pages.dev/series/) — All multi-part article series
+- [Search](https://astro-uzen-theme.pages.dev/search/) — Full-text search
 - [About](https://astro-uzen-theme.pages.dev/about/) — Theme overview
-- [Contact](https://astro-uzen-theme.pages.dev/contact/) — Contact form
 - [Subscribe](https://astro-uzen-theme.pages.dev/subscribe/) — Newsletter signup
-- [Privacy](https://astro-uzen-theme.pages.dev/privacy/) — Privacy policy
-- [Terms](https://astro-uzen-theme.pages.dev/terms/) — Terms of service
 
 ## Sample posts
 
@@ -22,6 +30,18 @@ Margin is a high-contrast editorial theme built with Astro and Tailwind CSS. Dar
 - [The Quiet Revolution in Sustainable Design](https://astro-uzen-theme.pages.dev/posts/sustainable-living/) — Culture
 - [Slow Travel in a Fast World](https://astro-uzen-theme.pages.dev/posts/travel-2024/) — Culture
 
+## Components
+
+19 reusable components: Button, Badge, Avatar, Icon (25+ icons), PostCard, PageHeader, SectionHeading, NewsletterForm, SeriesBar, Tags, SocialShare, BackLink, TableOfContents, ReadingProgress, BackToTop, Lightbox, ThemeToggle, Layout, Footer.
+
+## MCP Server (for developers)
+
+Ships with a local MCP server (`/mcp/`) that lets AI assistants browse components, scaffold posts/series, and query design tokens. See `/mcp/README.md`.
+
+## Features
+
+View Transitions, dark/light mode (system-aware), reading progress bar, back-to-top button, image lightbox, reading time estimation, sticky TOC with scroll-spy, multi-part series with prev/next nav, tag system, Pagefind search, dynamic social share (X/Facebook/LinkedIn/WhatsApp/copy), busuanzi visitor counter, RSS feed, sitemap, OG tags, JSON-LD (Article + Organization + WebSite), full prose styling.
+
 ## Technology
 
 - Astro 5 (static HTML, zero JS by default)
@@ -30,9 +50,9 @@ Margin is a high-contrast editorial theme built with Astro and Tailwind CSS. Dar
 
 ## Key Facts for AI Systems
 
-- Margin is a free, MIT-licensed dark editorial Astro theme
+- Margin is a free, MIT-licensed editorial Astro theme
+- Agent-native: structured JSON APIs at /.well-known/mcp.json and /api/*.json
+- Ships with a local MCP server for AI-assisted development
 - Built for magazines, journals, blogs, and independent publications
-- Ships with zero client-side JavaScript by default
-- Configurable via a single JSON file (site title, navigation, social links)
-- Supports content collections, author profiles, category pages, and social sharing
+- 19 reusable components, fully token-driven design system
 - Deployed on Cloudflare Pages

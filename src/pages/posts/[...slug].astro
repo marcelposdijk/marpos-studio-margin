@@ -1,5 +1,4 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import PostCard from '../../components/PostCard.astro';
 import SocialShare from '../../components/SocialShare.astro';
@@ -12,58 +11,66 @@ import SeriesBar from '../../components/SeriesBar.astro';
 import config from '../../config.json';
 import { formatDate } from '../../lib/dates';
 import { estimateReadingTime } from '../../lib/readingTime';
+import { getAllPosts, getPostBySlug, renderMarkdown, contentMode, type CMSPost } from '../../lib/content';
 
-export async function getStaticPaths() {
-	const posts = await getCollection('posts');
-	return posts.map((post) => ({
-		params: { slug: post.slug },
-		props: post,
-	}));
+const slug = Astro.params.slug as string;
+const post = await getPostBySlug(slug);
+
+if (!post) {
+	return Astro.redirect('/404');
 }
 
-const post = Astro.props;
-const { Content, headings } = await post.render();
-
-const allPosts = await getCollection('posts');
+const allPosts = await getAllPosts();
 const related = allPosts
-	.filter(p => p.data.category === post.data.category && p.slug !== post.slug)
+	.filter(p => p.category === post.category && p.slug !== post.slug)
 	.slice(0, 3);
 
-// Reading time
-const readMins = estimateReadingTime(post.body);
+const readMins = post.reading_time || estimateReadingTime(post.body);
+const html = renderMarkdown(post.body);
 
-// TOC: only h2 and h3
-const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
+// Extract h2/h3 from rendered HTML for TOC
+const headingRegex = /<h([23])[^>]*id="([^"]*)"[^>]*>(.*?)<\/h\1>/gi;
+const tocHeadings: { depth: number; slug: string; text: string }[] = [];
+let m;
+const cleanText = (h: string) => h.replace(/<[^>]+>/g, '');
+while ((m = headingRegex.exec(html)) !== null) {
+	tocHeadings.push({ depth: parseInt(m[1]), slug: m[2], text: cleanText(m[3]) });
+}
 
-// Series
-const seriesPosts = post.data.series
-	? allPosts.filter(p => p.data.series === post.data.series)
+const seriesPosts = post.series
+	? allPosts.filter(p => p.series === post.series)
 	: [];
+
+function toCardPost(p: CMSPost) {
+	return { slug: p.slug, data: {
+		title: p.title, description: p.description, pubDate: p.pubDate,
+		author: p.author, category: p.category, tags: p.tags, featured: p.featured,
+		image: p.cover_url ? { url: p.cover_url, alt: p.cover_alt || '' } : undefined,
+	}};
+}
 ---
 
-<Layout title={post.data.title} description={post.data.description}>
+<Layout title={post.title} description={post.description}>
 	<article class="max-w-[1280px] mx-auto px-5 md:px-8 py-10 md:py-14">
 		<BackLink href="/">Back to home</BackLink>
 
 		<div class="flex flex-col lg:grid lg:grid-cols-12 lg:gap-12">
-			<!-- Main column -->
 			<div class="col-span-12 lg:col-span-8 lg:col-start-1 min-w-0">
-				<!-- Article header -->
 				<header class="max-w-[680px] mb-12">
 					<div class="flex items-center gap-3 mb-4">
-						<Badge>{post.data.category}</Badge>
+						<Badge>{post.category}</Badge>
 						<span class="font-mono text-[11px] text-faint">
-							{formatDate(post.data.pubDate)}
+							{formatDate(post.pubDate)}
 						</span>
 					</div>
 					<h1 class="font-serif text-[28px] sm:text-[36px] md:text-[42px] font-bold leading-[1.15] tracking-tight text-ink mb-6">
-						{post.data.title}
+						{post.title}
 					</h1>
 					<div class="flex items-center gap-3 pt-4 border-t border-[var(--c-border)]">
 						{config.enableAuthor && (
 							<div class="flex items-center gap-2.5 text-[13px] text-body">
-								<Avatar name={post.data.author} size={26} />
-								By <a href={`/author/${post.data.author}`} class="font-medium text-ink hover:text-accent-soft transition-colors">{post.data.author}</a>
+								<Avatar name={post.author} size={26} />
+								By <a href={`/author/${post.author}`} class="font-medium text-ink hover:text-accent-soft transition-colors">{post.author}</a>
 							</div>
 						)}
 						<span class="text-faint">·</span>
@@ -76,10 +83,9 @@ const seriesPosts = post.data.series
 							<Icon name="eye" size={12} stroke={true} />
 							<span id="busuanzi_value_page_pv"></span> views
 						</span>
-						<!-- Tags -->
-						{post.data.tags && post.data.tags.length > 0 && (
+						{post.tags && post.tags.length > 0 && (
 							<span class="hidden sm:flex items-center gap-1.5 ml-auto">
-								{post.data.tags.map(tag => (
+								{post.tags.map(tag => (
 									<a href={`/tags/${tag.toLowerCase().replace(/\s+/g, '-')}/`}
 										class="font-mono text-[10px] text-muted hover:text-accent-soft transition-colors">
 										#{tag}
@@ -90,63 +96,55 @@ const seriesPosts = post.data.series
 					</div>
 				</header>
 
-				<!-- Cover image -->
-				{post.data.image && (
+				{post.cover_url && (
 					<div class="max-w-[800px] mb-12 rounded-[3px] overflow-hidden">
-						<img src={post.data.image.url} alt={post.data.image.alt}
+						<img src={post.cover_url} alt={post.cover_alt || post.title}
 							class="w-full h-auto object-cover max-h-[500px]" loading="eager" />
 					</div>
 				)}
 
-				<!-- Article body -->
-				<div class="prose mx-auto max-w-none" style="max-width:680px;" data-pagefind-body>
-					<Content />
+				<div class="prose mx-auto max-w-none" style="max-width:680px;" data-pagefind-body set:html={html}>
 				</div>
 
-				<!-- Series navigator -->
-				{seriesPosts.length > 0 && post.data.series && (
+				{seriesPosts.length > 0 && post.series && (
 					<div class="max-w-[680px] mt-16">
 						<SeriesBar
-							posts={seriesPosts}
+							posts={seriesPosts.map(toCardPost) as any}
 							currentSlug={post.slug}
-							seriesName={post.data.series}
+							seriesName={post.series}
 						/>
 					</div>
 				)}
 
-				<!-- Share -->
 				<div class="max-w-[680px] mt-16 pt-8 border-t border-[var(--c-border)] flex items-center gap-4">
 					<span class="text-[13px] text-body">Share:</span>
 					<SocialShare />
 				</div>
 
-				<!-- Related -->
 				{related.length > 0 && (
 					<div class="max-w-[800px] mt-16">
 						<div class="font-mono text-[11px] uppercase tracking-[0.12em] text-muted mb-5">Related Stories</div>
 						<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 							{related.map(r => (
-								<PostCard post={r} />
+								<PostCard post={toCardPost(r) as any} />
 							))}
 						</div>
 					</div>
 				)}
 			</div>
 
-			<!-- TOC sidebar -->
-			<TableOfContents headings={tocHeadings} />
+			<TableOfContents headings={tocHeadings as any} />
 		</div>
 	</article>
 
-	<!-- JSON-LD: Article -->
 	<script type="application/ld+json" set:html={JSON.stringify({
 		"@context": "https://schema.org",
 		"@type": "Article",
-		headline: post.data.title,
-		description: post.data.description,
-		datePublished: post.data.pubDate.toISOString(),
-		author: { "@type": "Person", name: post.data.author },
-		publisher: { "@type": "Organization", name: "Margin" },
-		articleSection: post.data.category,
+		headline: post.title,
+		description: post.description,
+		datePublished: post.pubDate.toISOString(),
+		author: { "@type": "Person", name: post.author },
+		publisher: { "@type": "Organization", name: config.siteTitle },
+		articleSection: post.category,
 	})} />
 </Layout>

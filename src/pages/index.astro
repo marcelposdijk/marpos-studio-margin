@@ -5,94 +5,112 @@ import SectionHeading from '../components/SectionHeading.astro';
 import NewsletterForm from '../components/NewsletterForm.astro';
 import Badge from '../components/Badge.astro';
 import Avatar from '../components/Avatar.astro';
-import { getCollection } from 'astro:content';
 import config from '../config.json';
 import { formatDateShort } from '../lib/dates';
+import { getAllPosts, contentMode, type CMSPost } from '../lib/content';
 
-const posts = await getCollection('posts');
-const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = await getAllPosts();
+const sortedPosts = posts.sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
 
-const featuredPost = sortedPosts.find(post => post.data.featured) || sortedPosts[0];
-const otherPosts = sortedPosts.filter(post => post.slug !== featuredPost.slug);
+const featuredPost = sortedPosts.find(post => post.featured) || sortedPosts[0];
+const otherPosts = featuredPost ? sortedPosts.filter(post => post.slug !== featuredPost.slug) : sortedPosts;
+
+// Build a compatible shape for PostCard
+function toCardPost(p: CMSPost) {
+	return {
+		slug: p.slug,
+		data: {
+			title: p.title,
+			description: p.description,
+			pubDate: p.pubDate,
+			author: p.author,
+			category: p.category,
+			tags: p.tags,
+			featured: p.featured,
+			image: p.cover_url ? { url: p.cover_url, alt: p.cover_alt || '' } : undefined,
+		},
+	};
+}
 ---
 
 <Layout title={`${config.siteTitle} — ${config.siteDescription}`}>
-	<!-- ═══ FEATURED — asymmetric 7/5 ═══ -->
+	{featuredPost ? (
 	<section class="max-w-[1280px] mx-auto px-5 md:px-8 pt-10 md:pt-14 pb-16 md:pb-20">
 		<div class="flex flex-col md:grid md:grid-cols-12 md:gap-12 md:items-end">
 			<div class="col-span-12 md:col-span-7 min-w-0">
 				<div class="font-mono text-[11px] font-medium uppercase tracking-[0.12em] text-accent mb-4">
-					{featuredPost.data.category} · {formatDateShort(featuredPost.data.pubDate)}
+					{featuredPost.category} · {formatDateShort(featuredPost.pubDate)}
 				</div>
 				<h1 class="font-serif text-[30px] sm:text-[36px] md:text-[48px] font-bold leading-[1.12] tracking-tight text-ink mb-[18px]">
 					<a href={`/posts/${featuredPost.slug}`} class="hover:text-accent-soft transition-colors">
-						{featuredPost.data.title}
+						{featuredPost.title}
 					</a>
 				</h1>
 				<p class="text-[16px] text-body leading-[1.7] max-w-[500px] mb-6">
-					{featuredPost.data.description}
+					{featuredPost.description}
 				</p>
 				<div class="flex items-center gap-2.5 text-[13px] text-muted">
-					<Avatar name={featuredPost.data.author} size={26} />
-					<span class="font-medium text-body">{featuredPost.data.author}</span>
+					<Avatar name={featuredPost.author} size={26} />
+					<span class="font-medium text-body">{featuredPost.author}</span>
 					<span>·</span>
 					<span>Editorial</span>
 					<span>·</span>
-					<span class="font-mono">{formatDateShort(featuredPost.data.pubDate)}</span>
+					<span class="font-mono">{formatDateShort(featuredPost.pubDate)}</span>
 				</div>
 			</div>
 			<div class="col-span-12 md:col-span-5 mt-6 md:mt-0 min-w-0">
 				<a href={`/posts/${featuredPost.slug}`} class="block h-[260px] md:h-[340px] rounded-[3px] overflow-hidden bg-surface">
-					{featuredPost.data.image ? (
-						<img src={featuredPost.data.image.url} alt={featuredPost.data.image.alt}
+					{featuredPost.cover_url ? (
+						<img src={featuredPost.cover_url} alt={featuredPost.cover_alt || featuredPost.title}
 							class="w-full h-full object-cover" loading="eager" />
 					) : (
 						<div class="w-full h-full flex items-center justify-center">
-							<span class="font-serif text-[80px] font-bold italic" style="color:color-mix(in srgb, var(--c-accent) 5%, transparent)">{featuredPost.data.category}</span>
+							<span class="font-serif text-[80px] font-bold italic" style="color:color-mix(in srgb, var(--c-accent) 5%, transparent)">{featuredPost.category}</span>
 						</div>
 					)}
 				</a>
 			</div>
 		</div>
 	</section>
+	) : (
+	<section class="max-w-[1280px] mx-auto px-5 md:px-8 pt-20 pb-20 text-center">
+		<p class="text-[16px] text-muted">No posts yet. Publish from your CMS.</p>
+	</section>
+	)}
 
-	<!-- ═══ ARTICLE GRID — 3 col CSS Grid ═══ -->
+	{otherPosts.length > 0 && (
 	<section class="max-w-[1280px] mx-auto px-5 md:px-8 pb-16 md:pb-20">
 		<SectionHeading label="Latest Stories" count={otherPosts.length} />
-
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="article-grid">
 			{otherPosts.map((post) => (
-				<PostCard post={post} />
+				<PostCard post={toCardPost(post) as any} />
 			))}
 		</div>
 	</section>
+	)}
 
-	<!-- ═══ INVERTED SECTION — series/editor picks ═══ -->
+	{otherPosts.length > 0 && (
 	<section class="section-inverted px-5 md:px-8" style="padding-top:56px; padding-bottom:56px;">
 		<div class="max-w-[1280px] mx-auto">
 			<div class="flex items-baseline gap-3.5 mb-7 md:mb-9">
 				<Badge variant="accent">Editor's Pick</Badge>
 				<span class="font-serif text-[20px] md:text-[24px] font-bold tracking-tight" style="color:var(--c-inv-ink)">In Depth</span>
 			</div>
-
 			<div class="flex flex-col md:grid md:grid-cols-12 md:gap-14 md:items-start">
-				<!-- Left: wide feature -->
 				<div class="col-span-12 md:col-span-7 min-w-0">
 					<div class="font-mono text-[11px] font-medium uppercase tracking-[0.1em] text-accent mb-2.5">
 						Featured Story
 					</div>
 					<h3 class="font-serif text-[22px] md:text-[28px] font-bold leading-[1.18] tracking-tight mb-3.5" style="color:var(--c-inv-ink)">
-						{otherPosts[0]?.data.title || 'Featured Post'}
+						{otherPosts[0]?.title || 'Featured Post'}
 					</h3>
 					<p class="font-serif text-[15.5px] leading-[1.7] mb-4" style="color:var(--c-inv-body)">
-						{otherPosts[0]?.data.description}
+						{otherPosts[0]?.description}
 					</p>
 					<div class="font-mono text-[12px]" style="color:var(--c-inv-muted)">
-						{otherPosts[0]?.data.author} · {otherPosts[0] && formatDateShort(otherPosts[0].data.pubDate)}
+						{otherPosts[0]?.author} · {otherPosts[0] && formatDateShort(otherPosts[0].pubDate)}
 					</div>
 				</div>
-
-				<!-- Right: recent list -->
 				<div class="col-span-12 md:col-span-5 mt-8 md:mt-0 min-w-0">
 					<div class="font-mono text-[11px] uppercase tracking-[0.1em] mb-4.5" style="color:var(--c-inv-muted)">
 						Recent
@@ -101,9 +119,9 @@ const otherPosts = sortedPosts.filter(post => post.slug !== featuredPost.slug);
 						{sortedPosts.slice(0, 5).map((post) => (
 							<a href={`/posts/${post.slug}`}
 								class="py-3.5 border-t hover:opacity-70 transition-opacity" style="border-color:var(--c-inv-border)">
-								<div class="font-mono text-[11px] mb-0.5" style="color:var(--c-inv-muted)">{formatDateShort(post.data.pubDate)}</div>
+								<div class="font-mono text-[11px] mb-0.5" style="color:var(--c-inv-muted)">{formatDateShort(post.pubDate)}</div>
 								<div class="font-serif text-[15px] font-semibold leading-[1.35]" style="color:var(--c-inv-ink)">
-									{post.data.title}
+									{post.title}
 								</div>
 							</a>
 						))}
@@ -113,7 +131,7 @@ const otherPosts = sortedPosts.filter(post => post.slug !== featuredPost.slug);
 			</div>
 		</div>
 	</section>
+	)}
 
-	<!-- ═══ Newsletter ═══ -->
 	<NewsletterForm />
 </Layout>

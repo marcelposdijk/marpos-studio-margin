@@ -1,34 +1,36 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import PostCard from '../../components/PostCard.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import config from '../../config.json';
+import { getAllPosts, type CMSPost } from '../../lib/content';
 
-export async function getStaticPaths() {
-	const posts = await getCollection('posts');
-	const categories = [...new Set(posts.map((post) => post.data.category))];
-	return categories.map((category) => ({
-		params: { category: category.toLowerCase() },
-		props: { category, posts: posts.filter(post => post.data.category === category) },
-	}));
+const category = Astro.params.category as string;
+const posts = await getAllPosts();
+const matched = posts.filter(p => p.category.toLowerCase() === category.toLowerCase());
+
+if (matched.length === 0) {
+	return Astro.redirect('/404');
 }
 
-const { category, posts } = Astro.props;
-const sortedPosts = posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const categoryName = matched[0].category;
+const sortedPosts = matched.sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+
+function toCardPost(p: CMSPost) {
+	return { slug: p.slug, data: {
+		title: p.title, description: p.description, pubDate: p.pubDate,
+		author: p.author, category: p.category, tags: p.tags, featured: p.featured,
+		image: p.cover_url ? { url: p.cover_url, alt: p.cover_alt || '' } : undefined,
+	}};
+}
 ---
 
-<Layout title={`${category} - ${config.siteTitle}`} description={`Latest stories in ${category}.`}>
-	<PageHeader
-		kicker="Category"
-		title={category}
-		desc={`${sortedPosts.length} ${sortedPosts.length === 1 ? 'story' : 'stories'} in this category.`}
-	/>
-
+<Layout title={`${categoryName} - ${config.siteTitle}`} description={`Latest stories in ${categoryName}.`}>
+	<PageHeader kicker="Category" title={categoryName} desc={`${sortedPosts.length} ${sortedPosts.length === 1 ? 'story' : 'stories'} in this category.`} />
 	<section class="max-w-[1280px] mx-auto px-5 md:px-8 pb-16 md:pb-20">
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{sortedPosts.map((post) => (
-				<PostCard post={post} />
+				<PostCard post={toCardPost(post) as any} />
 			))}
 		</div>
 	</section>

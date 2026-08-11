@@ -27,7 +27,7 @@ A high-contrast editorial theme for magazines, journals, and independent publica
 
 | Tool | Purpose |
 |---|---|
-| [Astro 5](https://astro.build) | Static site generator |
+| [Astro 7](https://astro.build) | Static site generator |
 | [Tailwind CSS 3](https://tailwindcss.com) | Utility-first styling |
 | [Pagefind](https://pagefind.app) | Static site search |
 | [Fraunces](https://fonts.google.com/specimen/Fraunces) | Display serif |
@@ -37,8 +37,8 @@ A high-contrast editorial theme for magazines, journals, and independent publica
 ## Quick Start
 
 ```bash
-git clone https://github.com/respectevery01/astro-uzen-theme.git
-cd astro-uzen-theme
+git clone https://github.com/Liteink/margin.git
+cd margin
 npm install
 npm run dev
 ```
@@ -131,4 +131,4 @@ This runs Astro build, then Pagefind indexes the output. Deploy the `dist/` fold
 
 ---
 
-Built by [Jask](https://github.com/respectevery01)
+Built by [LiteInk](https://github.com/Liteink)

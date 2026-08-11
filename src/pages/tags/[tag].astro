@@ -1,45 +1,36 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import PostCard from '../../components/PostCard.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import config from '../../config.json';
+import { getAllPosts, type CMSPost } from '../../lib/content';
 
-export async function getStaticPaths() {
-	const posts = await getCollection('posts');
-	const tagMap = new Map<string, typeof posts>();
+const tagSlug = Astro.params.tag as string;
+const posts = await getAllPosts();
+const matched = posts.filter(p => p.tags.some(t => t.toLowerCase().replace(/\s+/g, '-') === tagSlug));
 
-	posts.forEach(post => {
-		(post.data.tags || []).forEach(tag => {
-			const key = tag.toLowerCase().replace(/\s+/g, '-');
-			if (!tagMap.has(key)) tagMap.set(key, []);
-			tagMap.get(key)!.push(post);
-		});
-	});
-
-	return Array.from(tagMap.entries()).map(([slug, posts]) => ({
-		params: { tag: slug },
-		props: {
-			tag: posts[0].data.tags.find(t => t.toLowerCase().replace(/\s+/g, '-') === slug) || slug,
-			posts: posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
-		},
-	}));
+if (matched.length === 0) {
+	return Astro.redirect('/404');
 }
 
-const { tag, posts } = Astro.props;
+const tagName = matched[0].tags.find(t => t.toLowerCase().replace(/\s+/g, '-') === tagSlug) || tagSlug;
+const sortedPosts = matched.sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+
+function toCardPost(p: CMSPost) {
+	return { slug: p.slug, data: {
+		title: p.title, description: p.description, pubDate: p.pubDate,
+		author: p.author, category: p.category, tags: p.tags, featured: p.featured,
+		image: p.cover_url ? { url: p.cover_url, alt: p.cover_alt || '' } : undefined,
+	}};
+}
 ---
 
-<Layout title={`${tag} - ${config.siteTitle}`} description={`Posts tagged ${tag}.`}>
-	<PageHeader
-		kicker="Tag"
-		title={`#${tag}`}
-		desc={`${posts.length} ${posts.length === 1 ? 'post' : 'posts'} tagged ${tag}.`}
-	/>
-
+<Layout title={`${tagName} - ${config.siteTitle}`} description={`Posts tagged ${tagName}.`}>
+	<PageHeader kicker="Tag" title={`#${tagName}`} desc={`${sortedPosts.length} ${sortedPosts.length === 1 ? 'post' : 'posts'} tagged ${tagName}.`} />
 	<section class="max-w-[1280px] mx-auto px-5 md:px-8 pb-16 md:pb-20">
 		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-			{posts.map((post) => (
-				<PostCard post={post} />
+			{sortedPosts.map((post) => (
+				<PostCard post={toCardPost(post) as any} />
 			))}
 		</div>
 	</section>

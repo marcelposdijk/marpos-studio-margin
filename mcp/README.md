@@ -23,7 +23,7 @@ Add to your MCP client config:
   "mcpServers": {
     "margin": {
       "command": "node",
-      "args": ["/absolute/path/to/astro-uzen-theme/mcp/dist/index.js"]
+      "args": ["/absolute/path/to/margin/mcp/dist/index.js"]
     }
   }
 }
@@ -36,7 +36,7 @@ Add to your MCP client config:
   "mcpServers": {
     "margin": {
       "command": "node",
-      "args": ["/absolute/path/to/astro-uzen-theme/mcp/dist/index.js"]
+      "args": ["/absolute/path/to/margin/mcp/dist/index.js"]
     }
   }
 }
@@ -49,7 +49,7 @@ Add to your MCP client config:
   "mcpServers": {
     "margin": {
       "command": "node",
-      "args": ["/absolute/path/to/astro-uzen-theme/mcp/dist/index.js"]
+      "args": ["/absolute/path/to/margin/mcp/dist/index.js"]
     }
   }
 }
