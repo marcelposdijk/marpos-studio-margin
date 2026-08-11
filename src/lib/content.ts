@@ -61,7 +61,7 @@ async function getLocalPosts(): Promise<CMSPost[]> {
 		.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 		.map(e => ({
 			id: e.id,
-			slug: e.slug,
+			slug: e.id,
 			title: e.data.title,
 			description: e.data.description || '',
 			body: e.body,
@@ -84,7 +84,7 @@ async function getLocalPages(): Promise<CMSPost[]> {
 	const entries = await getCollection('pages');
 	return entries.map(e => ({
 		id: e.id,
-		slug: e.slug,
+		slug: e.id,
 		title: e.data.title,
 		description: (e.data as any).description || '',
 		body: e.body,

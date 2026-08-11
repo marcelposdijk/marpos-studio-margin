@@ -5,6 +5,12 @@ import PageHeader from '../../components/PageHeader.astro';
 import config from '../../config.json';
 import { getAllPosts, type CMSPost } from '../../lib/content';
 
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const cats = [...new Set(posts.map(p => p.category.toLowerCase()))];
+  return cats.map(c => ({ params: { category: c } }));
+}
+
 const category = Astro.params.category as string;
 const posts = await getAllPosts();
 const matched = posts.filter(p => p.category.toLowerCase() === category.toLowerCase());

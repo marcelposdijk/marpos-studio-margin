@@ -1,8 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import config from '../config.json';
-import { getPageBySlug, renderMarkdown } from '../lib/content';
+import { getPageBySlug, renderMarkdown, getAllPages } from '../lib/content';
 import SocialShare from '../components/SocialShare.astro';
+
+export async function getStaticPaths() {
+  const pages = await getAllPages();
+  return pages.map(p => ({ params: { slug: p.slug } }));
+}
 
 const slug = Astro.params.slug as string;
 const page = await getPageBySlug(slug);

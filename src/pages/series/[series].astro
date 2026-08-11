@@ -6,6 +6,12 @@ import config from '../../config.json';
 import { formatDate } from '../../lib/dates';
 import { getAllPosts, type CMSPost } from '../../lib/content';
 
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const series = [...new Set(posts.filter(p => p.series).map(p => p.series!.toLowerCase().replace(/\s+/g, '-')))];
+  return series.map(s => ({ params: { series: s } }));
+}
+
 const seriesSlug = Astro.params.series as string;
 const posts = await getAllPosts();
 const allSeriesPosts = posts.filter(p => p.series && p.series.toLowerCase().replace(/\s+/g, '-') === seriesSlug);

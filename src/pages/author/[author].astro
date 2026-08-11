@@ -1,9 +1,16 @@
----
+ ---
 import Layout from '../../layouts/Layout.astro';
 import PostCard from '../../components/PostCard.astro';
 import Avatar from '../../components/Avatar.astro';
 import config from '../../config.json';
 import { getAllPosts, type CMSPost } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const authors = [...new Set(posts.map(p => p.author))];
+  return authors.map(a => ({ params: { author: a } }));
+}
+
 
 const authorParam = Astro.params.author as string;
 const posts = await getAllPosts();

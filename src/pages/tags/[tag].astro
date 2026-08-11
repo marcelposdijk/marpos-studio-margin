@@ -5,6 +5,12 @@ import PageHeader from '../../components/PageHeader.astro';
 import config from '../../config.json';
 import { getAllPosts, type CMSPost } from '../../lib/content';
 
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  const tags = [...new Set(posts.flatMap(p => p.tags.map(t => t.toLowerCase().replace(/\s+/g, '-'))))];
+  return tags.map(t => ({ params: { tag: t } }));
+}
+
 const tagSlug = Astro.params.tag as string;
 const posts = await getAllPosts();
 const matched = posts.filter(p => p.tags.some(t => t.toLowerCase().replace(/\s+/g, '-') === tagSlug));

@@ -13,6 +13,11 @@ import { formatDate } from '../../lib/dates';
 import { estimateReadingTime } from '../../lib/readingTime';
 import { getAllPosts, getPostBySlug, renderMarkdown, contentMode, type CMSPost } from '../../lib/content';
 
+export async function getStaticPaths() {
+  const posts = await getAllPosts();
+  return posts.map(p => ({ params: { slug: p.slug } }));
+}
+
 const slug = Astro.params.slug as string;
 const post = await getPostBySlug(slug);
 
