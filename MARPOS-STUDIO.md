@@ -36,6 +36,16 @@ Page routes query their native collections directly so Studio can infer preview 
 
 Photo records are reusable assets, not public pages. Their preview opens the homepage; a photo does not appear there automatically when added to the library. Select it in a post cover or insert it in a story to use it. Visibility is library metadata; existing article image paths continue to render when a library record is hidden.
 
+## GitHub Pages demo
+
+The demo is deployed at https://marcelposdijk.github.io/marpos-studio-margin/ by the Deploy demo to GitHub Pages workflow on each push to `main`. A manual run is also available in GitHub Actions. The build includes the Pagefind search index. The workflow publishes only the generated static site, not unpublished content drafts.
+
+To reproduce the GitHub Pages build locally:
+
+```sh
+SITE_URL=https://marcelposdijk.github.io BASE_PATH=/marpos-studio-margin npm run build
+```
+
 ## Verify and deploy
 
 ```sh
@@ -47,7 +57,7 @@ npm run preview
 
 The build generates the static site and its Pagefind search index. Search requires a completed production build; it is not indexed by the development server.
 
-Set `SITE_URL` in the hosting environment to the actual public origin before deployment, for example `https://magazine.your-domain.com`. The default `https://margin.example.org` is deliberately a placeholder. Deploy the generated `dist/` folder to a static host. Routes assume hosting at the domain root; GitHub Pages project-subpath hosting needs additional base-path work.
+Set `SITE_URL` in the hosting environment to the actual public origin before deployment, for example `https://magazine.your-domain.com`. The default `https://margin.example.org` is deliberately a placeholder. Deploy the generated `dist/` folder to a static host. Set `BASE_PATH` for subpath hosting. GitHub Pages configures both values automatically through `.github/workflows/deploy.yml` on each push to `main`. Local Studio previews use `/` by default and keep image paths in content independent of the hosting path.
 
 Newsletter and contact forms are inherited presentation examples and are not connected to a service. The inherited third-party visitor counter is disabled in the footer. Google Fonts still loads fonts externally.
 

@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/urls';
 /**
  * BackLink.astro — back navigation link with arrow
  *
@@ -15,7 +16,7 @@ interface Props {
 const { href, class: className = '' } = Astro.props;
 ---
 
-<a href={href} class={`inline-flex items-center gap-2 text-[13px] text-muted hover:text-ink transition-colors mb-10 ${className}`}>
+<a href={withBase(href)} class={`inline-flex items-center gap-2 text-[13px] text-muted hover:text-ink transition-colors mb-10 ${className}`}>
 	<Icon name="arrow-left" size={14} stroke={true} />
 	<slot />
 </a>

@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/urls';
 import config from '../config.json';
 ---
 
@@ -6,10 +7,10 @@ import config from '../config.json';
 	<div class="max-w-[1280px] mx-auto px-5 md:px-8 flex flex-col items-center gap-3">
 		<div class="flex flex-wrap justify-center gap-x-5 gap-y-2">
 			{config.footer.sections.map(item => (
-				<a href={item.href} class="text-[13px] text-muted hover:text-ink transition-colors">{item.label}</a>
+				<a href={withBase(item.href)} class="text-[13px] text-muted hover:text-ink transition-colors">{item.label}</a>
 			))}
 			{config.footer.legal.map(item => (
-				<a href={item.href} class="text-[13px] text-muted hover:text-ink transition-colors">{item.label}</a>
+				<a href={withBase(item.href)} class="text-[13px] text-muted hover:text-ink transition-colors">{item.label}</a>
 			))}
 		</div>
 		<div class="font-mono text-[11px] text-faint flex items-center gap-2">

@@ -12,6 +12,7 @@
  *   <Button size="sm" variant="ghost">Cancel</Button>
  */
 import Icon from './Icon.astro';
+import { withBase } from '../lib/urls';
 
 interface Props {
 	variant?: 'primary' | 'ghost' | 'outline';
@@ -32,7 +33,7 @@ const {
 } = Astro.props;
 
 const Tag = href ? 'a' : 'button';
-const extraProps = href ? { href } : { type };
+const extraProps = href ? { href: withBase(href) } : { type };
 ---
 
 <Tag

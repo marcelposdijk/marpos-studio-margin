@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/urls';
 /**
  * PostCard.astro — reusable article card
  *
@@ -21,12 +22,12 @@ const hasImage = post.data.image?.url;
 ---
 
 <article class={`post-card group ${featured ? 'post-card--featured' : ''}`}>
-	<a href={`/posts/${post.slug}`} class="block">
+	<a href={withBase(`/posts/${post.slug}`)} class="block">
 		<!-- Cover -->
 		<div class={`post-card__cover ${featured ? 'aspect-[16/10]' : 'aspect-[16/9]'} rounded-[3px] overflow-hidden bg-surface mb-4`}>
 			{hasImage ? (
 				<img
-					src={post.data.image!.url}
+					src={withBase(post.data.image!.url)}
 					alt={post.data.image!.alt || post.data.title}
 					class="w-full h-full object-cover group-hover:opacity-80 transition-opacity"
 					loading={featured ? 'eager' : 'lazy'}

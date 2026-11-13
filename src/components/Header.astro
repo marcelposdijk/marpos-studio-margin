@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/urls';
 import config from '../config.json';
 import ThemeToggle from './ThemeToggle.astro';
 import Icon from './Icon.astro';
@@ -9,24 +10,24 @@ import Button from './Button.astro';
 	<div class="max-w-[1280px] mx-auto px-5 md:px-8 h-14 flex items-center justify-between">
 		<!-- Left: logo + nav -->
 		<div class="flex items-center gap-7">
-			<a href="/" class="flex items-center gap-2 font-serif font-bold text-[18px] tracking-tight text-ink">
+			<a href={withBase("/")} class="flex items-center gap-2 font-serif font-bold text-[18px] tracking-tight text-ink">
 				<span class="w-[18px] h-[18px] rounded-full" style="background:linear-gradient(135deg, var(--c-accent), var(--c-accent-deep))"></span>
 				{config.siteTitle}
 			</a>
 			<nav class="hidden md:flex gap-5">
 				{config.navigation.map(item => (
-					<a href={item.href} class="text-[13px] text-muted hover:text-ink transition-colors">{item.label}</a>
+					<a href={withBase(item.href)} class="text-[13px] text-muted hover:text-ink transition-colors">{item.label}</a>
 				))}
 			</nav>
 		</div>
 
 		<!-- Right: actions -->
 		<div class="flex items-center gap-2">
-			<a href="/search" class="flex items-center justify-center w-9 h-9 rounded-[3px] hover:bg-surface text-muted hover:text-ink transition-colors" aria-label="Search">
+			<a href={withBase("/search")} class="flex items-center justify-center w-9 h-9 rounded-[3px] hover:bg-surface text-muted hover:text-ink transition-colors" aria-label="Search">
 				<Icon name="search" size={18} />
 			</a>
 			<ThemeToggle />
-			<Button href="/subscribe" size="sm" variant="primary" class="hidden sm:inline-flex ml-1">
+			<Button href={withBase("/subscribe")} size="sm" variant="primary" class="hidden sm:inline-flex ml-1">
 				Subscribe
 			</Button>
 			<!-- Mobile menu toggle -->
@@ -40,9 +41,9 @@ import Button from './Button.astro';
 	<div id="mobile-menu" class="hidden md:hidden border-t border-[var(--c-border)]">
 		<nav class="flex flex-col px-5 py-4 gap-4">
 			{config.navigation.map(item => (
-				<a href={item.href} class="text-sm text-muted hover:text-ink">{item.label}</a>
+				<a href={withBase(item.href)} class="text-sm text-muted hover:text-ink">{item.label}</a>
 			))}
-			<a href="/subscribe" class="text-sm text-accent font-medium">Subscribe</a>
+			<a href={withBase("/subscribe")} class="text-sm text-accent font-medium">Subscribe</a>
 		</nav>
 	</div>
 </header>

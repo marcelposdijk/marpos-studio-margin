@@ -9,7 +9,7 @@ npm ci
 npm run dev
 ```
 
-Build with `npm run build`. Set `SITE_URL` to the real public origin before deploying the `dist/` folder. No deployment is configured yet.
+Build with `npm run build`. Set `SITE_URL` to the real public origin before deploying the `dist/` folder. The demo deploys automatically to [GitHub Pages](https://marcelposdijk.github.io/marpos-studio-margin/) on each push to `main`.
 
 Cover images in this fork use `image.src` and `image.alt`. Posts are Markdown (`.md`); the current collection pattern does not include MDX. The original README below describes the upstream theme; the Studio guide documents this fork's differences.
 

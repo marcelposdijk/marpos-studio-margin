@@ -62,6 +62,7 @@ import config from '../config.json';
 </style>
 
 <script>
+	import { withBase } from "../lib/urls";
 	let pagefind = null;
 	const input = document.getElementById('search-input') as HTMLInputElement;
 	const results = document.getElementById('search-results')!;
@@ -70,9 +71,9 @@ import config from '../config.json';
 	async function loadPagefind() {
 		if (pagefind) return pagefind;
 		try {
-			const pagefindPath = '/pagefind/pagefind-ui.js';
+			const pagefindPath = withBase('/pagefind/pagefind.js');
 			pagefind = await import(/* @vite-ignore */ pagefindPath);
-			await pagefind.init();
+			await pagefind.options({ baseUrl: withBase('/') });
 		} catch (e) {
 			empty.textContent = 'Search index not available in development. Run npm run build first.';
 			return null;
@@ -111,7 +112,7 @@ import config from '../config.json';
 			);
 
 			results.innerHTML = rendered.map(r => {
-				const url = r.url.replace(/\.html$/, '/');
+				const url = withBase(r.url.replace(/\.html$/, '/'));
 				return `
 					<a href="${url}" class="search-result block">
 						<div class="search-result-title">${r.meta?.title || 'Untitled'}</div>

@@ -1,4 +1,5 @@
 ---
+import { withBase } from '../lib/urls';
 /**
  * SeriesBar.astro — series navigator for multi-part articles
  * Shows: series name, current position, progress bar, prev/next links
@@ -31,7 +32,7 @@ const progress = total > 0 ? Math.round((current / total) * 100) : 0;
 <div class="series-bar">
 	<!-- Header: name + count -->
 	<div class="series-bar__head">
-		<a href={`/series/${seriesName.toLowerCase().replace(/\s+/g, '-')}/`} class="series-bar__name">
+		<a href={withBase(`/series/${seriesName.toLowerCase().replace(/\s+/g, '-')}/`)} class="series-bar__name">
 			<Icon name="bookmark" size={14} stroke={true} />
 			{seriesName}
 		</a>
@@ -47,7 +48,7 @@ const progress = total > 0 ? Math.round((current / total) * 100) : 0;
 	<div class="series-bar__list">
 		{sorted.map((p, i) => (
 			<a
-				href={p.slug === currentSlug ? undefined : `/posts/${p.slug}`}
+				href={withBase(p.slug === currentSlug ? undefined : `/posts/${p.slug}`)}
 				class={`series-bar__item ${p.slug === currentSlug ? 'is-current' : ''}`}
 			>
 				<span class="series-bar__num font-mono">{String(i + 1).padStart(2, '0')}</span>
@@ -62,7 +63,7 @@ const progress = total > 0 ? Math.round((current / total) * 100) : 0;
 	<!-- Prev / Next -->
 	<div class="series-bar__nav">
 		{prev ? (
-			<a href={`/posts/${prev.slug}`} class="series-bar__link series-bar__link--prev">
+			<a href={withBase(`/posts/${prev.slug}`)} class="series-bar__link series-bar__link--prev">
 				<Icon name="arrow-left" size={14} stroke={true} />
 				<span class="series-bar__link-label">Previous</span>
 				<span class="series-bar__link-title">{prev.data.title}</span>
@@ -74,7 +75,7 @@ const progress = total > 0 ? Math.round((current / total) * 100) : 0;
 			</span>
 		)}
 		{next ? (
-			<a href={`/posts/${next.slug}`} class="series-bar__link series-bar__link--next">
+			<a href={withBase(`/posts/${next.slug}`)} class="series-bar__link series-bar__link--next">
 				<span class="series-bar__link-label">Next</span>
 				<span class="series-bar__link-title">{next.data.title}</span>
 				<Icon name="arrow-right" size={14} stroke={true} />

@@ -12,6 +12,7 @@
  */
 
 import config from '../config.json';
+import { withBase } from './urls';
 import { getCollection } from 'astro:content';
 import { estimateReadingTime } from './readingTime';
 import { marked } from 'marked';
@@ -45,7 +46,12 @@ function escapeHtml(s: string): string {
 	return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-marked.use({ renderer, breaks: false, gfm: true });
+marked.use({
+  renderer, breaks: false, gfm: true,
+  walkTokens(token) {
+    if (token.type === 'image' || token.type === 'link') token.href = withBase(token.href);
+  },
+});
 
 export type { CMSPost } from './cms';
 
