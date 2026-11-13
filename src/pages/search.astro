@@ -3,6 +3,7 @@ export const prerender = true;
 import Layout from '../layouts/Layout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import config from '../config.json';
+import { withBase } from '../lib/urls';
 ---
 
 <Layout title={`Search — ${config.siteTitle}`} description="Search all posts.">
@@ -61,27 +62,33 @@ import config from '../config.json';
 	}
 </style>
 
-<script>
-	import { withBase } from "../lib/urls";
+<script is:inline type="module" define:vars={{ baseUrl: withBase('/') }} data-astro-rerun>
+  function withBase(url) {
+    const base = baseUrl.replace(/\/$/, '');
+    if (!url || !url.startsWith('/') || url.startsWith('//') || !base || url === base || url.startsWith(`${base}/`)) return url;
+    return `${base}${url}`;
+  }
 	let pagefind = null;
-	const input = document.getElementById('search-input') as HTMLInputElement;
-	const results = document.getElementById('search-results')!;
-	const empty = document.getElementById('search-empty')!;
+	const input = document.getElementById('search-input');
+	const results = document.getElementById('search-results');
+	const empty = document.getElementById('search-empty');
 
 	async function loadPagefind() {
 		if (pagefind) return pagefind;
 		try {
 			const pagefindPath = withBase('/pagefind/pagefind.js');
-			pagefind = await import(/* @vite-ignore */ pagefindPath);
+			pagefind = await import(pagefindPath);
 			await pagefind.options({ baseUrl: withBase('/') });
 		} catch (e) {
+      console.error('Unable to load the search index', e);
+      pagefind = null;
 			empty.textContent = 'Search index not available in development. Run npm run build first.';
 			return null;
 		}
 		return pagefind;
 	}
 
-	let debounceTimer: number;
+	let debounceTimer;
 	input.addEventListener('input', async () => {
 		clearTimeout(debounceTimer);
 		debounceTimer = setTimeout(async () => {
