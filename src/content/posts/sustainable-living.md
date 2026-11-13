@@ -4,8 +4,8 @@ description: "Sustainability in design stopped being a marketing claim and becam
 pubDate: 2024-01-25
 author: "Editorial"
 image:
-    url: "https://images.unsplash.com/photo-1542601906990-b4d3fb7d5b43"
-    alt: "Green plants"
+    src: "/images/photo-1476514525535-07fb3b4ae5f1.jpg"
+    alt: "Mountain scenery surrounding a lake"
 category: "Culture"
 featured: false
 ---

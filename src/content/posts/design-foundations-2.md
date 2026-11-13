@@ -4,7 +4,7 @@ description: "Consistent spacing is the difference between amateur and professio
 pubDate: 2024-04-12
 author: "Design Desk"
 image:
-    url: "https://images.unsplash.com/photo-1507842217343-583bb7270b66"
+    src: "/images/photo-1507842217343-583bb7270b66.jpg"
     alt: "Grid paper"
 category: "Design"
 featured: false

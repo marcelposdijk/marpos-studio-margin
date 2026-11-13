@@ -21,17 +21,17 @@ const {
 	compact = false,
 	title = 'Stay in the loop',
 	titleEmphasis = 'loop',
-	desc = 'One email per week. No spam, no daily noise. Just the stories worth reading.',
-	buttonText = 'Try free',
+	desc = 'Demo newsletter form. Subscriptions are not connected.',
+	buttonText = 'Demo only',
 	class: className = '',
 } = Astro.props;
 ---
 
 {compact ? (
-	<form class={`flex flex-col sm:flex-row gap-2 max-w-[400px] mx-auto ${className}`}>
+	<form onsubmit="event.preventDefault()" class={`flex flex-col sm:flex-row gap-2 max-w-[400px] mx-auto ${className}`}>
 		<input type="email" placeholder="your@email.com"
 			class="flex-1 px-4 py-3 bg-surface border border-[var(--c-border)] rounded-[3px] text-ink text-sm outline-none focus:border-accent transition-colors min-w-0" />
-		<Button variant="primary" type="submit">{buttonText}</Button>
+		<Button variant="primary" type="button">{buttonText}</Button>
 	</form>
 ) : (
 	<section class={`text-center border-t border-[var(--c-border)] ${className}`} style="padding-top:64px; padding-bottom:64px;">
@@ -43,10 +43,10 @@ const {
 			<p class="text-[15px] text-body mb-7">
 				{desc}
 			</p>
-			<form class="flex flex-col sm:flex-row gap-2 max-w-[400px] mx-auto">
+			<form onsubmit="event.preventDefault()" class="flex flex-col sm:flex-row gap-2 max-w-[400px] mx-auto">
 				<input type="email" placeholder="your@email.com"
 					class="flex-1 px-4 py-3 bg-surface border border-[var(--c-border)] rounded-[3px] text-ink text-sm outline-none focus:border-accent transition-colors min-w-0" />
-				<Button variant="primary" type="submit">{buttonText}</Button>
+				<Button variant="primary" type="button">{buttonText}</Button>
 			</form>
 		</div>
 	</section>

@@ -1,3 +1,20 @@
+# Margin — Marpos Studio demo
+
+An English-language Astro publication adapted from [Margin by LiteInk](https://github.com/Liteink/margin). Includes local cover photographs, native content collections, working preview routes and sample articles for the editorial workflow.
+
+Start with [the Marpos Studio guide](MARPOS-STUDIO.md). Add `marcelposdijk/marpos-studio-margin` in Studio, or install dependencies and open this checkout as a local repository.
+
+```sh
+npm ci
+npm run dev
+```
+
+Build with `npm run build`. Set `SITE_URL` to the real public origin before deploying the `dist/` folder. No deployment is configured yet.
+
+Cover images in this fork use `image.src` and `image.alt`. Posts are Markdown (`.md`); the current collection pattern does not include MDX. The original README below describes the upstream theme; the Studio guide documents this fork's differences.
+
+---
+
 # Margin — A Dark Editorial Astro Theme
 
 A high-contrast editorial theme for magazines, journals, and independent publications. Built for writers who want their words to do the talking.

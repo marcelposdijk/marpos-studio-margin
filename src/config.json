@@ -5,10 +5,10 @@
     "token": "your_api_token_here"
   },
   "siteTitle": "Margin",
-  "siteDescription": "A dark editorial blog theme. Built with Astro, Tailwind CSS, and TypeScript.",
+  "siteDescription": "An independent publication, edited with Marpos Studio and built with Astro.",
   "introSection": {
     "title": "Margin",
-    "text": "A high-contrast editorial theme for magazines, journals, and independent publications. Dark mode, fast, readable.",
+    "text": "Stories about technology, design and culture. An English-language Astro publication you can edit with Marpos Studio.",
     "linkText": "Learn more",
     "linkUrl": "/about"
   },
@@ -38,23 +38,7 @@
       "href": "/about"
     }
   ],
-  "socialLinks": [
-    {
-      "label": "Twitter",
-      "href": "#",
-      "icon": "twitter"
-    },
-    {
-      "label": "Facebook",
-      "href": "#",
-      "icon": "facebook"
-    },
-    {
-      "label": "Instagram",
-      "href": "#",
-      "icon": "instagram"
-    }
-  ],
+  "socialLinks": [],
   "shareLinks": [
     {
       "label": "Twitter",
@@ -68,10 +52,9 @@
     }
   ],
   "marquee": [
-    "MARGIN \u2014 A DARK EDITORIAL ASTRO THEME",
-    "BUILT FOR SPEED, READABILITY, AND BOLD TYPOGRAPHY",
-    "CONTENT COLLECTIONS, DARK MODE, SOCIAL SHARING",
-    "MIT LICENSED \u2014 FREE FOR ANY USE"
+    "MARGIN \u2014 AN INDEPENDENT PUBLICATION",
+    "EDITED WITH MARPOS STUDIO \u00b7 BUILT WITH ASTRO",
+    "STORIES, PHOTOGRAPHY AND IDEAS"
   ],
   "enableAuthor": true,
   "footer": {

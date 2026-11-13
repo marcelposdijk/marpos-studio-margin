@@ -1,8 +1,8 @@
 {
-  "name": "margin-astro-theme",
+  "name": "marpos-studio-margin",
   "type": "module",
   "version": "1.1.0",
-  "description": "A dark editorial Astro theme for magazines, journals, and independent publications. Built for writers who want their words to do the talking.",
+  "description": "An English-language Margin publication demonstrating Marpos Studio with Astro.",
   "scripts": {
     "dev": "astro dev --host 127.0.0.1",
     "build": "astro sync && astro build && npx pagefind --site dist",
@@ -38,7 +38,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Liteink/margin.git"
-  },
-  "homepage": "https://margin.pages.dev"
+    "url": "https://github.com/marcelposdijk/marpos-studio-margin.git"
+  }
 }

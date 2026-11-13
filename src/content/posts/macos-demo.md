@@ -4,7 +4,7 @@ description: "Dark mode is not just inverting colors. It requires a different ap
 pubDate: 2024-02-05
 author: "Design Desk"
 image:
-    url: "https://images.unsplash.com/photo-1542831371-29b0f74f9713"
+    src: "/images/photo-1542831371-29b0f74f9713.jpg"
     alt: "Code and design"
 category: "Technology"
 featured: false

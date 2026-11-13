@@ -4,7 +4,7 @@ description: "A comprehensive reference for every Markdown element supported by 
 pubDate: 2024-03-02
 author: "Design Desk"
 image:
-    url: "https://images.unsplash.com/photo-1542831371-29b0f74f9713"
+    src: "/images/photo-1542831371-29b0f74f9713.jpg"
     alt: "Code and design"
 category: "Design"
 featured: false
@@ -124,7 +124,7 @@ No syntax highlighting, but still styled.
 
 ## Images
 
-![Cover image example](https://images.unsplash.com/photo-1542831371-29b0f74f9713 "Code on screen")
+![Cover image example](/images/photo-1542831371-29b0f74f9713.jpg "Code on screen")
 
 ## Horizontal rule
 

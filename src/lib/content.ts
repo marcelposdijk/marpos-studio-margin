@@ -57,7 +57,7 @@ const MODE: 'local' | 'cms' = (config as any).contentMode || 'local';
 async function getLocalPosts(): Promise<CMSPost[]> {
 	const entries = await getCollection('posts');
 	return entries
-		.filter(e => !e.data.draft)
+		.filter(e => import.meta.env.DEV || !e.data.draft)
 		.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 		.map(e => ({
 			id: e.id,
@@ -71,7 +71,7 @@ async function getLocalPosts(): Promise<CMSPost[]> {
 			tags: Array.isArray(e.data.tags) ? e.data.tags : [],
 			featured: !!e.data.featured,
 			draft: !!e.data.draft,
-			cover_url: (e.data as any).image?.url || null,
+			cover_url: (e.data as any).image?.src || null,
 			cover_alt: (e.data as any).image?.alt || null,
 			type: 'post' as const,
 			series: (e.data as any).series || null,

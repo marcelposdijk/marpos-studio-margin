@@ -1,31 +1,17 @@
 ---
 title: "About Margin"
-description: "A dark editorial Astro theme for magazines, journals, and independent publications."
-pubDate: 2024-01-01
+description: "An English-language Astro publication edited with Marpos Studio."
+showSocial: false
 ---
 
-# About Margin
+Margin is a demonstration publication about technology, design and culture. It shows how an Astro website can be maintained through Marpos Studio, with local Markdown stories and a shared image library.
 
-Margin is a dark editorial theme built for magazines, journals, and independent publications. It prioritizes readability, speed, and bold typography.
+## Try the editorial workflow
 
-## What's included
+Edit an article, replace a cover image, preview a draft and review the changes before publishing. Categories, tags, author pages and series are derived from the articles.
 
-- Dark mode by default with high-contrast text
-- Content collections for easy post management
-- Author profiles and attribution
-- Social sharing buttons
-- Syntax-highlighted code blocks
-- Responsive layout for all devices
-- Configurable via a single JSON file
+## Credits
 
-## Built with
+This project is adapted from [Margin by LiteInk](https://github.com/Liteink/margin), an MIT-licensed Astro theme. The original sample stories remain as example content. Image source URLs are recorded in the repository's media-sources.json file.
 
-- [Astro](https://astro.build) — static site generator, zero JS by default
-- [Tailwind CSS](https://tailwindcss.com) — utility-first styling
-- [Fraunces](https://fonts.google.com/specimen/Fraunces) — display serif
-- [Inter](https://fonts.google.com/specimen/Inter) — body sans-serif
-- [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) — code
-
-## License
-
-MIT. Free for personal and commercial use.
+Newsletter and contact forms are inherited presentation examples and are not connected to a mailing or message service.

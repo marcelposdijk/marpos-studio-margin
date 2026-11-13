@@ -4,7 +4,7 @@ description: "AI went from novelty to infrastructure. Here's what changed, what 
 pubDate: 2024-03-10
 author: "Editorial"
 image:
-    url: "https://images.unsplash.com/photo-1677442136019-21780ecad995"
+    src: "/images/photo-1677442136019-21780ecad995.jpg"
     alt: "AI abstract art"
 category: "Technology"
 featured: true

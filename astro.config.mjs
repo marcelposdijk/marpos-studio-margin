@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://astro-uzen-theme.pages.dev',
+  site: process.env.SITE_URL || 'https://margin.example.org',
   output: 'static',
   integrations: [mdx(), sitemap()],
 });

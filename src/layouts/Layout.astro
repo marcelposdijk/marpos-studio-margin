@@ -15,7 +15,7 @@ interface Props {
 }
 
 const { title, description = config.siteDescription, image } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site || 'https://astro-uzen-theme.pages.dev').toString();
+const canonical = new URL(Astro.url.pathname, Astro.site || 'https://margin.example.org').toString();
 const ogImage = image || '/og.png';
 ---
 
@@ -61,14 +61,14 @@ const ogImage = image || '/og.png';
 			"@context": "https://schema.org",
 			"@type": "Organization",
 			name: config.siteTitle,
-			url: "https://astro-uzen-theme.pages.dev",
+			url: Astro.site?.toString(),
 			description: config.siteDescription
 		})} />
 		<script type="application/ld+json" set:html={JSON.stringify({
 			"@context": "https://schema.org",
 			"@type": "WebSite",
 			name: config.siteTitle,
-			url: "https://astro-uzen-theme.pages.dev"
+			url: Astro.site?.toString()
 		})} />
 	</head>
 	<body class="bg-bg text-body min-h-screen flex flex-col antialiased overflow-x-hidden">

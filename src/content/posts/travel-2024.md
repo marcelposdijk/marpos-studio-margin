@@ -4,7 +4,7 @@ description: "The travel industry split between optimization-maximizers and expe
 pubDate: 2024-01-15
 author: "Editorial"
 image:
-    url: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1"
+    src: "/images/photo-1476514525535-07fb3b4ae5f1.jpg"
     alt: "Mountain landscape"
 category: "Culture"
 featured: false
