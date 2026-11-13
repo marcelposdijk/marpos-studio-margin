@@ -5,9 +5,10 @@
   "description": "An English-language Margin publication demonstrating Marpos Studio with Astro.",
   "scripts": {
     "dev": "astro dev --host 127.0.0.1",
-    "build": "astro sync && astro build && npx pagefind --site dist",
+    "build": "astro sync && astro build && node scripts/optimize-images.mjs && npx pagefind --site dist",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test:images": "node --test scripts/optimize-images.test.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^14.2.0",
@@ -24,6 +25,8 @@
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
     "pagefind": "^1.5.2",
+    "parse5": "7.3.0",
+    "sharp": "0.35.2",
     "wrangler": "^4.115.0"
   },
   "license": "MIT",

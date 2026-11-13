@@ -62,7 +62,7 @@ function toCardPost(p: CMSPost) {
 			<div class="col-span-12 md:col-span-5 mt-6 md:mt-0 min-w-0">
 				<a href={withBase(`/posts/${featuredPost.slug}`)} class="block h-[260px] md:h-[340px] rounded-[3px] overflow-hidden bg-surface">
 					{featuredPost.cover_url ? (
-						<img src={withBase(featuredPost.cover_url)} alt={featuredPost.cover_alt || featuredPost.title}
+						<img sizes="(min-width: 768px) 480px, calc(100vw - 40px)" src={withBase(featuredPost.cover_url)} alt={featuredPost.cover_alt || featuredPost.title}
 							class="w-full h-full object-cover" loading="eager" />
 					) : (
 						<div class="w-full h-full flex items-center justify-center">

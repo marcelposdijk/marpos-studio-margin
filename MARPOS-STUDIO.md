@@ -55,7 +55,15 @@ npm run build
 npm run preview
 ```
 
-The build generates the static site and its Pagefind search index. Search requires a completed production build; it is not indexed by the development server.
+The build generates the static site, optimizes local article images and then creates its Pagefind search index.
+
+### Image optimization
+
+Original uploads and library records stay unchanged in `public/images/` and `content/photos/`. After Astro builds, `scripts/optimize-images.mjs` finds local images in the rendered HTML, including covers, cards and Markdown story images. It writes content-hashed AVIF and WebP variants into `dist/_images/` at widths up to 320, 640, 960, 1280 and 1600 pixels, without enlarging smaller originals. Responsive `<picture>` sources let the browser choose a format and width. Dimensions reserve layout space; cards and story images load lazily, while covers retain eager loading. GIFs and animated uploads keep their original behavior.
+
+Only build output changes. New uploads are optimized when the next deployment builds; no generated files need committing. Studio's development preview continues to show the originals. The original remains the fallback for older browsers and is used by the story-image lightbox. External images and images outside `/images/` are not processed. `npm run test:images` checks preservation, responsive output, orientation, animation and repeated use across pages.
+
+ Search requires a completed production build; it is not indexed by the development server.
 
 Set `SITE_URL` in the hosting environment to the actual public origin before deployment, for example `https://magazine.your-domain.com`. The default `https://margin.example.org` is deliberately a placeholder. Deploy the generated `dist/` folder to a static host. Set `BASE_PATH` for subpath hosting. GitHub Pages configures both values automatically through `.github/workflows/deploy.yml` on each push to `main`. Local Studio previews use `/` by default and keep image paths in content independent of the hosting path.
 
