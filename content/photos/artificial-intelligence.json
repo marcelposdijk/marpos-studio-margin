@@ -1,0 +1,14 @@
+{
+  "title": "Artificial intelligence",
+  "image": {
+    "src": "/images/photo-1677442136019-21780ecad995.jpg",
+    "alt": "An abstract illustration of artificial intelligence"
+  },
+  "categories": [
+    "Technology"
+  ],
+  "credit": "Unsplash \u2014 supplied with the upstream Margin demo",
+  "sourceUrl": "https://images.unsplash.com/photo-1677442136019-21780ecad995",
+  "visible": true,
+  "order": 6144
+}

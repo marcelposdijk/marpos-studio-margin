@@ -4,7 +4,7 @@ This English-language demo adapts [Margin by LiteInk](https://github.com/Liteink
 
 ## Open the demo
 
-In Marpos Studio, choose **Add project** and select `marcelposdijk/marpos-studio-margin`. Studio installs the dependencies and discovers the Posts and Pages collections.
+In Marpos Studio, choose **Add project** and select `marcelposdijk/marpos-studio-margin`. Studio installs the dependencies and discovers the Posts, Pages and Photos collections.
 
 For an existing checkout, run `npm ci`, then choose **Open local repository** and select the project directory.
 
@@ -13,7 +13,7 @@ No CMS account, API token or database is required. Keep `contentMode` set to `lo
 ## A short demonstration
 
 1. Open **Posts → welcome-to-margin**. Change the title or description and edit a sentence in the visual story editor.
-2. Use the cover image field to select another local photo. Images use `{ src, alt }`, so Studio provides a media picker. Add descriptive alternative text.
+2. Open **Photos** to browse the six images, edit their details or upload a new image. Use the cover image field to select another local photo. Images use `{ src, alt }`, so Studio provides a media picker. Add descriptive alternative text.
 3. Choose **Preview this page**. Check both the changed cover and story, then save or discard the temporary edits.
 4. Open **a-story-in-progress**. Its `draft: true` article is visible in the local Astro development preview but excluded from the production build.
 5. Add a Markdown article with title, description, publication date, author and category. Optional fields include image, tags, featured status and series order. New posts preview at `/posts/<identifier>`; pages preview at `/<identifier>`.
@@ -26,11 +26,15 @@ Studio's online drafts and the article's `draft` field have different roles. Onl
 - Posts: `src/content/posts/*.md`.
 - Pages: `src/content/pages/*.md`.
 - Schemas: `src/content.config.ts`, using Astro's native local `glob()` loaders.
+- Library records: `content/photos/*.json`, with titles, alternative text, categories, credit, visibility and order.
+- Library configuration: `content/.navigation.yml` selects Photos for image choosers; `content/photos/.navigation.yml` enables the media view and uploads to `public/images/`.
 - Media: `public/images/`; content stores paths such as `/images/photo-1476514525535-07fb3b4ae5f1.jpg`.
 - Categories, tags, author archives and series are derived from post fields. Authors are text fields, not a separate reference collection.
 - Site identity and navigation are developer settings in `src/config.json`, outside Studio's content publishing scope.
 
 Page routes query their native collections directly so Studio can infer preview prefixes, including for newly created documents. Bodies use plain Markdown and support Studio's visual editor. The original template's `image.url` frontmatter has been changed to `image.src` for Studio's image controls; the display adapter preserves the theme's existing card format.
+
+Photo records are reusable assets, not public pages. Their preview opens the homepage; a photo does not appear there automatically when added to the library. Select it in a post cover or insert it in a story to use it. Visibility is library metadata; existing article image paths continue to render when a library record is hidden.
 
 ## Verify and deploy
 

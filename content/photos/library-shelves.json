@@ -1,0 +1,15 @@
+{
+  "title": "Library shelves",
+  "image": {
+    "src": "/images/photo-1507842217343-583bb7270b66.jpg",
+    "alt": "Shelves filled with books in a library"
+  },
+  "categories": [
+    "Culture",
+    "Editorial"
+  ],
+  "credit": "Unsplash \u2014 supplied with the upstream Margin demo",
+  "sourceUrl": "https://images.unsplash.com/photo-1507842217343-583bb7270b66",
+  "visible": true,
+  "order": 2048
+}

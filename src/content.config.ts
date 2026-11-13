@@ -30,7 +30,24 @@ const pagesCollection = defineCollection({
 	}),
 });
 
+const photosCollection = defineCollection({
+  loader: glob({ base: './content', pattern: 'photos/*.json',
+    generateId: ({ entry }) => entry.split('/').pop()!.replace(/\.json$/, ''),
+  }),
+  schema: z.object({
+    title: z.string().min(1),
+    image: z.object({ src: z.string().startsWith('/images/'), alt: z.string().min(1) }),
+    thumbnail: z.object({ src: z.string().startsWith('/images/'), alt: z.string() }).optional(),
+    categories: z.array(z.string()).default([]),
+    credit: z.string().default(''),
+    sourceUrl: z.string().url().optional(),
+    visible: z.boolean().default(true),
+    order: z.number().default(0),
+  }),
+});
+
 export const collections = {
 	'posts': postsCollection,
 	'pages': pagesCollection,
+	'photos': photosCollection,
 };
