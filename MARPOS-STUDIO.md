@@ -6,7 +6,7 @@ This English-language demo adapts [Margin by LiteInk](https://github.com/Liteink
 
 In Marpos Studio, choose **Add project** and select `marcelposdijk/marpos-studio-margin`. Studio installs the dependencies and discovers the Posts, Pages and Photos collections.
 
-For an existing checkout, run `npm ci`, then choose **Open local repository** and select the project directory.
+For an existing checkout, use Node.js 24.x and run `npm ci`, then choose **Open local repository** and select the project directory.
 
 No CMS account, API token or database is required. Keep `contentMode` set to `local` in `src/config.json`.
 

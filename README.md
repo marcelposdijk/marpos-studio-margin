@@ -4,6 +4,8 @@ An English-language Astro publication adapted from [Margin by LiteInk](https://g
 
 Start with [the Marpos Studio guide](MARPOS-STUDIO.md). Add `marcelposdijk/marpos-studio-margin` in Studio, or install dependencies and open this checkout as a local repository.
 
+Use Node.js 24.x for local development. If you use nvm, run `nvm install` and `nvm use` from the repository root before installing dependencies.
+
 ```sh
 npm ci
 npm run dev
