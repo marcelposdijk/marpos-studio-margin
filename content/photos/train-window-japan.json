@@ -1,0 +1,14 @@
+{
+  "title": "Train window in Japan",
+  "image": {
+    "src": "/src/assets/images/library/train-window-japan.jpg",
+    "alt": "Railway tracks and a red train framed by a train window in rural Japan"
+  },
+  "categories": [
+    "Travel"
+  ],
+  "credit": "mark wang on Unsplash",
+  "sourceUrl": "https://unsplash.com/photos/train-view-from-a-train-window-OHGMoML_Fkc",
+  "visible": true,
+  "order": 10240
+}

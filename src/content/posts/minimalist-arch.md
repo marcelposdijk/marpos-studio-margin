@@ -4,7 +4,7 @@ description: "High contrast, heavy type, raw layouts. Brutalism returned because
 pubDate: 2024-02-20
 author: "Design Desk"
 image:
-    src: "/images/photo-1555066931-4365d14bab8c.jpg"
+    src: "/src/assets/images/library/photo-1555066931-4365d14bab8c.jpg"
     alt: "Code on screen"
 category: "Technology"
 featured: false

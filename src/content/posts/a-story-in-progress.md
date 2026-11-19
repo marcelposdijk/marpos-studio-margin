@@ -8,7 +8,7 @@ tags: [Editorial]
 featured: false
 draft: true
 image:
-  src: "/images/photo-1507842217343-583bb7270b66.jpg"
+  src: "/src/assets/images/library/photo-1507842217343-583bb7270b66.jpg"
   alt: "Shelves filled with books in a library"
 ---
 

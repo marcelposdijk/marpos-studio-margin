@@ -32,22 +32,22 @@ function images(node, result = []) {
 }
 
 /** Only dist is changed. Original files and all content references stay intact. */
-export async function optimizeSite({ outDir = 'dist', publicDir = 'public', basePath = process.env.BASE_PATH || '/' } = {}) {
-  const output = resolve(outDir);
-  const originals = await realpath(publicDir);
+export async function optimizeSite({ outDir = 'dist', basePath = process.env.BASE_PATH || '/' } = {}) {
+  const output = await realpath(outDir);
   const base = `/${basePath.split('/').filter(Boolean).join('/')}`.replace(/\/$/, '');
-  const imagePrefix = `${base}/images/`;
+  const assetPrefix = `${base}/_astro/`;
+  const publicImagePrefix = `${base}/images/`;
   const cache = new Map();
   let imageCount = 0;
 
   async function variants(src) {
     if (cache.has(src)) return cache.get(src);
     const pending = (async () => {
-      if (!src.startsWith(imagePrefix) || /[?#]/.test(src)) return null;
+      if ((!src.startsWith(assetPrefix) && !src.startsWith(publicImagePrefix)) || /[?#]/.test(src)) return null;
       const localPath = decodeURIComponent(src.slice(base.length + 1));
       if (!['.jpg', '.jpeg', '.png', '.webp', '.avif'].includes(extname(localPath).toLowerCase())) return null;
-      const path = await realpath(join(originals, localPath));
-      if (!inside(originals, path)) throw new Error(`Image points outside public: ${src}`);
+      const path = await realpath(join(output, localPath));
+      if (!inside(output, path)) throw new Error(`Image points outside the build output: ${src}`);
       const bytes = await readFile(path);
       const metadata = await sharp(bytes, { animated: true }).metadata();
       // Preserve animation; never turn an animated upload into a still image.

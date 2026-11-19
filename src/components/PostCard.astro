@@ -1,5 +1,6 @@
 ---
 import { withBase } from '../lib/urls';
+import { imageUrl } from '../lib/images';
 /**
  * PostCard.astro — reusable article card
  *
@@ -28,7 +29,7 @@ const hasImage = post.data.image?.url;
 			{hasImage ? (
 				<img
                     sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, calc(100vw - 40px)"
-					src={withBase(post.data.image!.url)}
+					src={imageUrl(hasImage)}
 					alt={post.data.image!.alt || post.data.title}
 					class="w-full h-full object-cover group-hover:opacity-80 transition-opacity"
 					loading={featured ? 'eager' : 'lazy'}

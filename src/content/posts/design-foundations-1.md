@@ -4,7 +4,7 @@ description: "Type choices make or break first impressions. Here's how to think 
 pubDate: 2024-04-05
 author: "Design Desk"
 image:
-    src: "/images/photo-1561070791-2526d30994b5.jpg"
+    src: "/src/assets/images/library/photo-1561070791-2526d30994b5.jpg"
     alt: "Typography close up"
 category: "Design"
 featured: false

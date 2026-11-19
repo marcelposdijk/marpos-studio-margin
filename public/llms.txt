@@ -1,5 +1,5 @@
 # Margin — Marpos Studio demo
 
 An English-language editorial publication built with Astro.
-Articles and pages are local Markdown content collections; photographs are in public/images/.
+Articles and pages are local Markdown content collections. The photo library stores its source images in src/assets/images/library/.
 The source repository includes setup instructions and a Marpos Studio demonstration guide.

@@ -1,0 +1,15 @@
+{
+  "title": "Desk at night",
+  "image": {
+    "src": "/src/assets/images/library/desk-at-night.jpg",
+    "alt": "A lit monitor and an open laptop on a desk in a dark room"
+  },
+  "categories": [
+    "Design",
+    "Technology"
+  ],
+  "credit": "Clint Patterson on Unsplash",
+  "sourceUrl": "https://unsplash.com/photos/a-desk-with-a-lamp-and-a-laptop-on-it-ulftbH1sA0k",
+  "visible": true,
+  "order": 8192
+}

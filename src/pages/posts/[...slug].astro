@@ -1,5 +1,6 @@
 ---
 import { withBase } from '../../lib/urls';
+import { imageUrl } from '../../lib/images';
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import PostCard from '../../components/PostCard.astro';
@@ -106,7 +107,7 @@ function toCardPost(p: CMSPost) {
 
 				{post.cover_url && (
 					<div class="max-w-[800px] mb-12 rounded-[3px] overflow-hidden">
-						<img sizes="(min-width: 1024px) 800px, calc(100vw - 40px)" src={withBase(post.cover_url)} alt={post.cover_alt || post.title}
+						<img sizes="(min-width: 1024px) 800px, calc(100vw - 40px)" src={imageUrl(post.cover_url)} alt={post.cover_alt || post.title}
 							class="w-full h-auto object-cover max-h-[500px]" loading="eager" />
 					</div>
 				)}

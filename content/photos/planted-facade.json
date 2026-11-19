@@ -1,0 +1,15 @@
+{
+  "title": "Planted facade",
+  "image": {
+    "src": "/src/assets/images/library/planted-facade.jpg",
+    "alt": "Green plants growing between the metal fins of a building facade"
+  },
+  "categories": [
+    "Architecture",
+    "Design"
+  ],
+  "credit": "Danist Soh on Unsplash",
+  "sourceUrl": "https://unsplash.com/photos/a-tall-building-with-a-plant-growing-out-of-it-QypwWl_BxxE",
+  "visible": true,
+  "order": 9216
+}

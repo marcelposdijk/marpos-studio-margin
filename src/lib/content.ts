@@ -12,7 +12,7 @@
  */
 
 import config from '../config.json';
-import { withBase } from './urls';
+import { imageUrl } from './images';
 import { getCollection } from 'astro:content';
 import { estimateReadingTime } from './readingTime';
 import { marked } from 'marked';
@@ -49,7 +49,7 @@ function escapeHtml(s: string): string {
 marked.use({
   renderer, breaks: false, gfm: true,
   walkTokens(token) {
-    if (token.type === 'image' || token.type === 'link') token.href = withBase(token.href);
+    if (token.type === 'image' || token.type === 'link') token.href = imageUrl(token.href);
   },
 });
 

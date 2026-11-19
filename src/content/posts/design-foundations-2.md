@@ -4,8 +4,8 @@ description: "Consistent spacing is the difference between amateur and professio
 pubDate: 2024-04-12
 author: "Design Desk"
 image:
-    src: "/images/photo-1507842217343-583bb7270b66.jpg"
-    alt: "Grid paper"
+    src: "/src/assets/images/library/graphing-notebook.jpg"
+    alt: "A pen on an open grid notebook on a white wooden table"
 category: "Design"
 featured: false
 series: "Design Foundations"

@@ -8,7 +8,7 @@ tags: [Editorial, Photography, Astro]
 featured: true
 draft: false
 image:
-  src: "/images/photo-1476514525535-07fb3b4ae5f1.jpg"
+  src: "/src/assets/images/library/photo-1476514525535-07fb3b4ae5f1.jpg"
   alt: "A lake surrounded by mountains beneath a cloudy sky"
 ---
 
@@ -20,7 +20,7 @@ Margin brings writing and photography together in a simple editorial website. Th
 
 Open this article in Studio and change a sentence. Edit the headline, update the summary or choose a different cover from the media library. The website uses the same Markdown file you are editing.
 
-![Mountain scenery beside a quiet lake](/images/photo-1476514525535-07fb3b4ae5f1.jpg)
+![Mountain scenery beside a quiet lake](/src/assets/images/library/photo-1476514525535-07fb3b4ae5f1.jpg)
 
 ## Give images a purpose
 

@@ -36,8 +36,8 @@ const photosCollection = defineCollection({
   }),
   schema: z.object({
     title: z.string().min(1),
-    image: z.object({ src: z.string().startsWith('/images/'), alt: z.string().min(1) }),
-    thumbnail: z.object({ src: z.string().startsWith('/images/'), alt: z.string() }).optional(),
+    image: z.object({ src: z.string().startsWith('/src/assets/images/library/'), alt: z.string().min(1) }),
+    thumbnail: z.object({ src: z.string().startsWith('/src/assets/images/library/'), alt: z.string() }).optional(),
     categories: z.array(z.string()).default([]),
     credit: z.string().default(''),
     sourceUrl: z.string().url().optional(),

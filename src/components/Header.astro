@@ -3,57 +3,279 @@ import { withBase } from '../lib/urls';
 import config from '../config.json';
 import ThemeToggle from './ThemeToggle.astro';
 import Icon from './Icon.astro';
-import Button from './Button.astro';
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '');
+const homeHref = withBase('/');
+
+function current(href: string): 'page' | 'location' | undefined {
+	const url = new URL(href, Astro.url);
+	if (url.origin !== Astro.url.origin) return;
+
+	const path = url.pathname.replace(/\/$/, '');
+	if (path === currentPath) return 'page';
+	if (path !== homeHref.replace(/\/$/, '') && currentPath.startsWith(`${path}/`)) {
+		return 'location';
+	}
+}
+
+const navigation = config.navigation.map(item => ({ ...item, href: withBase(item.href) }));
+const searchHref = withBase('/search');
+const subscribeHref = withBase('/subscribe');
 ---
 
-<header class="sticky top-0 z-50 bg-bg/85 backdrop-blur-xl border-b border-[var(--c-border)]">
-	<div class="max-w-[1280px] mx-auto px-5 md:px-8 h-14 flex items-center justify-between">
-		<!-- Left: logo + nav -->
-		<div class="flex items-center gap-7">
-			<a href={withBase("/")} class="flex items-center gap-2 font-serif font-bold text-[18px] tracking-tight text-ink">
-				<span class="w-[18px] h-[18px] rounded-full" style="background:linear-gradient(135deg, var(--c-accent), var(--c-accent-deep))"></span>
-				{config.siteTitle}
-			</a>
-			<nav class="hidden md:flex gap-5">
-				{config.navigation.map(item => (
-					<a href={withBase(item.href)} class="text-[13px] text-muted hover:text-ink transition-colors">{item.label}</a>
-				))}
-			</nav>
-		</div>
+<header class="site-header">
+	<div class="header-row">
+		<a href={homeHref} class="wordmark font-serif">
+			<span class="wordmark-mark" aria-hidden="true"></span>
+			{config.siteTitle}
+		</a>
 
-		<!-- Right: actions -->
-		<div class="flex items-center gap-2">
-			<a href={withBase("/search")} class="flex items-center justify-center w-9 h-9 rounded-[3px] hover:bg-surface text-muted hover:text-ink transition-colors" aria-label="Search">
-				<Icon name="search" size={18} />
+		<nav class="desktop-nav" aria-label="Main navigation">
+			{navigation.map(({ href, label }) => (
+				<a href={href} class="menu-link" aria-current={current(href)}>{label}</a>
+			))}
+		</nav>
+
+		<div class="header-actions">
+			<a href={searchHref} class="header-control" aria-label="Search" aria-current={current(searchHref)}>
+				<Icon name="search" size={19} />
 			</a>
 			<ThemeToggle />
-			<Button href={withBase("/subscribe")} size="sm" variant="primary" class="hidden sm:inline-flex ml-1">
-				Subscribe
-			</Button>
-			<!-- Mobile menu toggle -->
-			<button id="mobile-menu-toggle" class="md:hidden text-muted ml-1" aria-label="Menu">
-				<Icon name="menu" size={22} />
-			</button>
-		</div>
-	</div>
+			<a href={subscribeHref} class="subscribe-link" aria-current={current(subscribeHref)}>Subscribe</a>
 
-	<!-- Mobile menu -->
-	<div id="mobile-menu" class="hidden md:hidden border-t border-[var(--c-border)]">
-		<nav class="flex flex-col px-5 py-4 gap-4">
-			{config.navigation.map(item => (
-				<a href={withBase(item.href)} class="text-sm text-muted hover:text-ink">{item.label}</a>
-			))}
-			<a href={withBase("/subscribe")} class="text-sm text-accent font-medium">Subscribe</a>
-		</nav>
+			<details id="mobile-menu" class="mobile-menu">
+				<summary class="header-control menu-toggle" aria-controls="mobile-navigation">
+					<span class="menu-open-icon" aria-hidden="true"><Icon name="menu" size={19} /></span>
+					<span class="menu-close-icon" aria-hidden="true"><Icon name="close" size={19} /></span>
+					Menu
+				</summary>
+				<nav id="mobile-navigation" class="mobile-nav" aria-label="Main navigation">
+					{navigation.map(({ href, label }) => (
+						<a href={href} class="menu-link" aria-current={current(href)}>{label}</a>
+					))}
+					<a href={subscribeHref} class="menu-link mobile-subscribe" aria-current={current(subscribeHref)}>Subscribe</a>
+				</nav>
+			</details>
+		</div>
 	</div>
 </header>
 
 <script>
-	function initMobileMenu() {
-		var btn = document.getElementById('mobile-menu-toggle');
-		var menu = document.getElementById('mobile-menu');
-		btn?.addEventListener('click', () => menu?.classList.toggle('hidden'));
+	document.addEventListener('keydown', event => {
+		if (event.key !== 'Escape') return;
+		const menu = document.querySelector<HTMLDetailsElement>('#mobile-menu[open]');
+		if (!menu || !menu.contains(document.activeElement)) return;
+
+		menu.open = false;
+		menu.querySelector('summary')?.focus();
+	});
+
+	document.addEventListener('click', event => {
+		if (!(event.target instanceof Element) || !event.target.closest('#mobile-navigation a')) return;
+		document.querySelector<HTMLDetailsElement>('#mobile-menu')?.removeAttribute('open');
+	});
+</script>
+
+<style>
+	/* Hallmark · pre-emit critique: P4 H5 E5 S4 R5 V4 */
+	.site-header {
+		--menu-accent: var(--c-accent-soft);
+		--menu-tint: color-mix(in srgb, var(--menu-accent) 11%, var(--c-bg));
+		--menu-action-bg: var(--c-accent-deep);
+		--menu-action-ink: var(--c-inv-bg);
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		background: var(--c-bg);
+		border-bottom: 1px solid var(--c-border-strong);
 	}
 
-	document.addEventListener('astro:page-load', initMobileMenu);
-</script>
+	:global([data-theme="light"]) .site-header {
+		--menu-accent: var(--c-accent-deep);
+		--menu-action-ink: var(--c-bg);
+	}
+
+	.header-row {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: .75rem;
+		min-height: 4rem;
+		max-width: 1280px;
+		margin-inline: auto;
+		padding-inline: clamp(1rem, 3vw, 2rem);
+	}
+
+	.wordmark {
+		display: inline-flex;
+		align-items: center;
+		gap: .5rem;
+		min-height: 2.75rem;
+		color: var(--c-ink);
+		font-size: 1.25rem;
+		font-weight: 700;
+		letter-spacing: -.025em;
+		white-space: nowrap;
+	}
+
+	.wordmark-mark {
+		width: 1.125rem;
+		height: 1.125rem;
+		border-radius: 50%;
+		background: linear-gradient(135deg, var(--c-accent), var(--c-accent-deep));
+	}
+
+	.header-actions,
+	.desktop-nav {
+		align-items: center;
+		gap: .25rem;
+	}
+
+	.header-actions { display: flex; }
+	.desktop-nav { display: none; }
+
+	.menu-link,
+	.header-control,
+	.subscribe-link,
+	.header-actions :global(.theme-toggle) {
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 2.75rem;
+		border-radius: .25rem;
+		color: var(--c-ink);
+		font-size: .9375rem;
+		font-weight: 500;
+		line-height: 1.25;
+		white-space: nowrap;
+		transition: color 150ms ease, background-color 150ms ease;
+	}
+
+	.subscribe-link { display: none; }
+
+	.menu-link {
+		position: relative;
+		padding: .5rem .75rem;
+	}
+
+	.menu-link::after {
+		position: absolute;
+		inset: auto .75rem .3rem;
+		height: 2px;
+		border-radius: 1px;
+		background: currentColor;
+		opacity: 0;
+		transform: scaleX(.6);
+		transition: opacity 150ms ease, transform 150ms ease;
+		content: '';
+	}
+
+	.header-control,
+	.header-actions :global(.theme-toggle) {
+		min-width: 2.75rem;
+		cursor: pointer;
+	}
+
+	.menu-toggle {
+		gap: .35rem;
+		padding-inline: .5rem;
+		list-style: none;
+	}
+
+	.menu-toggle::-webkit-details-marker { display: none; }
+	.menu-toggle span { display: inline-flex; }
+	.menu-toggle .menu-close-icon,
+	.mobile-menu[open] .menu-open-icon { display: none; }
+	.mobile-menu[open] .menu-close-icon { display: inline-flex; }
+
+	.mobile-nav {
+		position: absolute;
+		inset: 100% 0 auto;
+		display: grid;
+		gap: .25rem;
+		padding: .75rem clamp(1rem, 3vw, 2rem) 1rem;
+		max-height: calc(100dvh - 4rem);
+		overflow-y: auto;
+		background: var(--c-bg);
+		border-block: 1px solid var(--c-border-strong);
+	}
+
+	.mobile-nav .menu-link {
+		justify-content: flex-start;
+		padding-inline: 1rem;
+	}
+
+	.mobile-nav .menu-link::after {
+		inset: .65rem auto .65rem .25rem;
+		width: 2px;
+		height: auto;
+		transform: scaleY(.6);
+	}
+
+	.mobile-nav .mobile-subscribe {
+		margin-top: .25rem;
+		border-top: 1px solid var(--c-border-strong);
+		color: var(--menu-accent);
+		font-weight: 650;
+	}
+
+	.menu-link[aria-current],
+	.header-control[aria-current],
+	.mobile-menu[open] .menu-toggle {
+		background: var(--menu-tint);
+		color: var(--menu-accent);
+	}
+
+	.menu-link[aria-current] { font-weight: 650; }
+	.menu-link[aria-current]::after { opacity: 1; transform: none; }
+
+	@media (hover: hover) {
+		.menu-link:hover,
+		.header-control:hover,
+		.header-actions :global(.theme-toggle:hover) {
+			background: var(--menu-tint);
+			color: var(--menu-accent);
+		}
+
+		.menu-link:hover::after { opacity: 1; transform: none; }
+		.wordmark:hover { color: var(--menu-accent); }
+	}
+
+	.site-header :is(a, summary, :global(.theme-toggle)):focus-visible {
+		outline: 2px solid var(--menu-accent);
+		outline-offset: 2px;
+	}
+
+	.site-header :is(.menu-link, .header-control, .subscribe-link, :global(.theme-toggle)):active {
+		box-shadow: inset 0 0 0 1px currentColor;
+	}
+
+	@media (min-width: 56rem) {
+		.desktop-nav { display: flex; }
+		.mobile-menu { display: none; }
+
+		.subscribe-link {
+			display: inline-flex;
+			margin-inline-start: .5rem;
+			padding-inline: .875rem;
+			background: var(--menu-action-bg);
+			color: var(--menu-action-ink);
+			font-weight: 650;
+		}
+
+		.subscribe-link:hover,
+		.subscribe-link[aria-current] {
+			background: var(--menu-tint);
+			color: var(--menu-accent);
+			box-shadow: inset 0 0 0 1px var(--menu-accent);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.menu-link,
+		.menu-link::after,
+		.header-control,
+		.subscribe-link,
+		.header-actions :global(.theme-toggle) { transition: none; }
+	}
+</style>

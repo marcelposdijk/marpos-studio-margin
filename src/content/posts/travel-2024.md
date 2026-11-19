@@ -4,8 +4,8 @@ description: "The travel industry split between optimization-maximizers and expe
 pubDate: 2024-01-15
 author: "Editorial"
 image:
-    src: "/images/photo-1476514525535-07fb3b4ae5f1.jpg"
-    alt: "Mountain landscape"
+    src: "/src/assets/images/library/train-window-japan.jpg"
+    alt: "Railway tracks and a red train framed by a train window in rural Japan"
 category: "Culture"
 featured: false
 ---

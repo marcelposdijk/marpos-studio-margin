@@ -4,8 +4,8 @@ description: "Sustainability in design stopped being a marketing claim and becam
 pubDate: 2024-01-25
 author: "Editorial"
 image:
-    src: "/images/photo-1476514525535-07fb3b4ae5f1.jpg"
-    alt: "Mountain scenery surrounding a lake"
+    src: "/src/assets/images/library/planted-facade.jpg"
+    alt: "Green plants growing between the metal fins of a building facade"
 category: "Culture"
 featured: false
 ---

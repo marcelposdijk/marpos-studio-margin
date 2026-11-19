@@ -4,8 +4,8 @@ description: "Dark mode is not just inverting colors. It requires a different ap
 pubDate: 2024-02-05
 author: "Design Desk"
 image:
-    src: "/images/photo-1542831371-29b0f74f9713.jpg"
-    alt: "Code and design"
+    src: "/src/assets/images/library/desk-at-night.jpg"
+    alt: "A lit monitor and an open laptop on a desk in a dark room"
 category: "Technology"
 featured: false
 series: "Building with AI"

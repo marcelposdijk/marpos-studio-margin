@@ -27,8 +27,8 @@ Studio's online drafts and the article's `draft` field have different roles. Onl
 - Pages: `src/content/pages/*.md`.
 - Schemas: `src/content.config.ts`, using Astro's native local `glob()` loaders.
 - Library records: `content/photos/*.json`, with titles, alternative text, categories, credit, visibility and order.
-- Library configuration: `content/.navigation.yml` selects Photos for image choosers; `content/photos/.navigation.yml` enables the media view and uploads to `public/images/`.
-- Media: `public/images/`; content stores paths such as `/images/photo-1476514525535-07fb3b4ae5f1.jpg`.
+- Library configuration: the project-root `.navigation.yml` sets `studio.mediaRoot` to `src/assets/images`. The `content/.navigation.yml` selects Photos for image choosers, and `content/photos/.navigation.yml` enables the media view and sets the upload directory to `library`.
+- Media: `src/assets/images/library/`. Studio and content use source paths such as `/src/assets/images/library/photo-1476514525535-07fb3b4ae5f1.jpg`. Astro resolves them to public asset URLs.
 - Categories, tags, author archives and series are derived from post fields. Authors are text fields, not a separate reference collection.
 - Site identity and navigation are developer settings in `src/config.json`, outside Studio's content publishing scope.
 
@@ -59,9 +59,9 @@ The build generates the static site, optimizes local article images and then cre
 
 ### Image optimization
 
-Original uploads and library records stay unchanged in `public/images/` and `content/photos/`. After Astro builds, `scripts/optimize-images.mjs` finds local images in the rendered HTML, including covers, cards and Markdown story images. It writes content-hashed AVIF and WebP variants into `dist/_images/` at widths up to 320, 640, 960, 1280 and 1600 pixels, without enlarging smaller originals. Responsive `<picture>` sources let the browser choose a format and width. Dimensions reserve layout space; cards and story images load lazily, while covers retain eager loading. GIFs and animated uploads keep their original behavior.
+Astro bundles library images from `src/assets/images/library/` into `dist/_astro/`. After Astro builds, `scripts/optimize-images.mjs` finds the local images in rendered covers, cards and Markdown stories. It writes content-hashed AVIF and WebP variants into `dist/_images/` at widths up to 320, 640, 960, 1280 and 1600 pixels, without enlarging smaller originals. Responsive `<picture>` sources let the browser choose a format and width. Dimensions reserve layout space. Cards and story images load lazily, while covers retain eager loading. GIFs and animated uploads keep their original behavior.
 
-Only build output changes. New uploads are optimized when the next deployment builds; no generated files need committing. Studio's development preview continues to show the originals. The original remains the fallback for older browsers and is used by the story-image lightbox. External images and images outside `/images/` are not processed. `npm run test:images` checks preservation, responsive output, orientation, animation and repeated use across pages.
+The next deployment build optimizes new uploads. Studio's development preview shows the originals, and the bundled original serves as the browser fallback and story lightbox image. `npm run test:images` checks preservation, responsive output, orientation, animation and repeated use across pages.
 
  Search requires a completed production build; it is not indexed by the development server.
 
